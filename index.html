@@ -6,6 +6,7 @@
   <title>Muslims Day - সম্পূর্ণ ইসলামিক অ্যাপ</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
   <style>
     .tab-content { display: none; }
     .tab-content.active { display: block; }
@@ -17,9 +18,15 @@
     .developer-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #10b981; }
     .qibla-box { width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #1e3a8a; border: 4px solid #3b82f6; transition: transform 0.5s; }
     .font-arabic { font-family: 'Amiri', 'Traditional Arabic', serif; }
-    #quranAudio { width: 100%; margin-top: 10px; }
     .notification-badge { animation: pulse 2s infinite; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    .count-btn { width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #e2e8f0; cursor: pointer; border: none; }
+    .count-btn:hover { background: #cbd5e1; }
+    .para-btn { cursor: pointer; transition: 0.2s; }
+    .para-btn:hover { background: #d1fae5; }
+    .para-btn.active { background: #10b981; color: white; }
+    .contact-link { text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 8px; }
+    .contact-link:hover { color: #10b981; }
   </style>
 </head>
 <body class="bg-gray-50 font-sans antialiased">
@@ -30,6 +37,7 @@
   <header class="bg-gradient-to-r from-emerald-700 to-teal-600 text-white p-4 sticky top-0 z-20 shadow">
     <div class="flex justify-between items-center">
       <div class="flex items-center gap-2">
+        <!-- Logo SVG -->
         <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="bg-white/20 rounded-full p-1">
           <circle cx="50" cy="50" r="45" stroke="#FBBF24" stroke-width="6"/>
           <path d="M50 15 L58 40 L85 40 L65 55 L73 82 L50 67 L27 82 L35 55 L15 40 L42 40 L50 15Z" fill="#FBBF24"/>
@@ -78,16 +86,20 @@
     <!-- QURAN TAB -->
     <div id="quran" class="tab-content mt-3">
       <div class="flex gap-2 mb-3">
-        <input id="surahSearch" type="text" placeholder="সূরা বা আয়াত খুঁজুন..." class="flex-1 border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-emerald-400">
+        <input id="surahSearch" type="text" placeholder="সূরা খুঁজুন..." class="flex-1 border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-emerald-400">
         <button id="searchSurahBtn" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm"><i class="fas fa-search"></i></button>
       </div>
-      <div class="flex gap-2 mb-3 overflow-x-auto">
+      <div class="flex gap-2 mb-3 overflow-x-auto pb-2">
         <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="1">পারা ১</button>
         <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="2">পারা ২</button>
         <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="3">পারা ৩</button>
         <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="4">পারা ৪</button>
         <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="5">পারা ৫</button>
-        <span class="text-gray-400 text-xs flex items-center">+ আরও</span>
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="6">পারা ৬</button>
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="7">পারা ৭</button>
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="8">পারা ৮</button>
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="9">পারা ৯</button>
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="10">পারা ১০</button>
       </div>
       <div id="surahList" class="surah-list border rounded-lg divide-y"></div>
       <div id="quranViewer" class="mt-4 hidden">
@@ -96,7 +108,6 @@
           <button id="closeQuranView" class="text-red-500"><i class="fas fa-times"></i></button>
         </div>
         <div id="ayahContainer" class="bg-gray-50 p-3 rounded-lg max-h-80 overflow-y-auto text-sm leading-relaxed"></div>
-        <audio id="quranAudio" controls class="mt-3"></audio>
       </div>
     </div>
 
@@ -127,12 +138,12 @@
           <p class="text-sm font-medium">তাসবিহ</p>
           <div class="text-4xl font-bold text-amber-700 my-2" id="tasbeehCount">0</div>
           <div class="flex justify-center gap-2">
-            <button class="count-btn bg-amber-200 w-10 h-10 rounded-full" id="tasbeehBtn"><i class="fas fa-plus"></i></button>
-            <button class="count-btn bg-gray-200 w-10 h-10 rounded-full" id="resetTasbeeh"><i class="fas fa-undo"></i></button>
+            <button class="count-btn bg-amber-200" id="tasbeehBtn"><i class="fas fa-plus"></i></button>
+            <button class="count-btn bg-gray-200" id="resetTasbeeh"><i class="fas fa-undo"></i></button>
           </div>
           <div class="mt-2 flex gap-1 justify-center">
-            <button class="count-btn bg-amber-100 w-10 h-10 rounded-full text-xs" data-increment="33">৩৩</button>
-            <button class="count-btn bg-amber-100 w-10 h-10 rounded-full text-xs" data-increment="99">৯৯</button>
+            <button class="count-btn bg-amber-100 text-xs" data-increment="33">৩৩</button>
+            <button class="count-btn bg-amber-100 text-xs" data-increment="99">৯৯</button>
           </div>
         </div>
       </div>
@@ -152,21 +163,24 @@
       <div class="bg-gray-50 p-4 rounded-xl shadow-sm border mb-4">
         <h3 class="font-bold flex items-center gap-2"><i class="fas fa-user-cog text-emerald-600"></i> ডেভেলপার</h3>
         <div class="flex items-center gap-4 mt-3">
-          <img src="https://ui-avatars.com/api/?name=Md+Suman+Hasan&size=80&background=10b981&color=fff&font-size=0.5" alt="Developer" class="developer-img" id="developerImg">
+          <!-- আপনার ছবি এখানে বসান। ফাইল নাম: profile.png -->
+          <img src="profile.png" alt="Developer" class="developer-img" id="developerImg">
           <div>
             <p class="font-semibold text-gray-800 text-lg">এমডি সুমন হাসান</p>
             <p class="text-sm text-gray-600">ডেভেলপার</p>
             <p class="text-xs text-gray-500">Muslims Day v2.0</p>
           </div>
         </div>
-        <div class="mt-3 pt-2 border-t text-sm space-y-1">
-          <p><i class="fas fa-envelope text-emerald-600 w-5"></i> suman.hasan@example.com</p>
-          <p><i class="fas fa-phone text-emerald-600 w-5"></i> ০১৯৬০ ৬৭ ৮৫ ৮৪</p>
-          <p><i class="fab fa-whatsapp text-green-600 w-5"></i> ০১৯৬০ ৬৭ ৮৫ ৮৪ (WhatsApp)</p>
+        <div class="mt-3 pt-2 border-t text-sm space-y-2">
+          <p>
+            <i class="fas fa-envelope text-emerald-600 w-5"></i>
+            <a href="mailto:suman.hasan@example.com" class="contact-link">suman.hasan@example.com</a>
+          </p>
+          <p>
+            <i class="fab fa-whatsapp text-green-600 w-5"></i>
+            <a href="https://wa.me/8801960678584" target="_blank" class="contact-link">০১৯৬০ ৬৭ ৮৫ ৮৪ (WhatsApp)</a>
+          </p>
         </div>
-        <p class="text-xs text-gray-500 mt-2"><i class="fas fa-info-circle"></i> ছবি পরিবর্তন: নিচের বাটনে ক্লিক করুন</p>
-        <button id="changeImageBtn" class="mt-2 bg-emerald-600 text-white px-4 py-1 rounded-lg text-sm"><i class="fas fa-upload"></i> ছবি পরিবর্তন</button>
-        <input type="file" id="imageInput" accept="image/png,image/jpeg" class="hidden">
       </div>
     </div>
 
@@ -200,7 +214,6 @@
     const quranViewer = document.getElementById('quranViewer');
     const surahTitle = document.getElementById('surahTitle');
     const ayahContainer = document.getElementById('ayahContainer');
-    const quranAudio = document.getElementById('quranAudio');
     const closeQuranBtn = document.getElementById('closeQuranView');
 
     const hadithListEl = document.getElementById('hadithList');
@@ -260,7 +273,7 @@
       }
     }
 
-    // ========== 2. QURAN (Full 30 Paras) ==========
+    // ========== 2. QURAN (Full 114 Surahs) ==========
     async function loadSurahList() {
       const data = await fetchJson('https://api.alquran.cloud/v1/surah');
       if (!data || data.code !== 200) {
@@ -295,51 +308,54 @@
 
     async function loadAyahs(surah) {
       if (!surah) return;
-      const url = `https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani,bn.bengali,en.asad`;
+      surahTitle.textContent = `${surah.number}. ${surah.name} (${surah.englishName})`;
+      quranViewer.classList.remove('hidden');
+      ayahContainer.innerHTML = '<div class="text-center text-gray-500 py-4"><i class="fas fa-spinner fa-spin"></i> আয়াত লোড হচ্ছে...</div>';
+      
+      // Load Arabic + Bengali + Transliteration
+      const url = `https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani,bn.bengali,en.transliteration`;
       const data = await fetchJson(url);
+      
       if (!data || data.code !== 200) {
-        ayahContainer.innerHTML = '<div class="text-red-400">আয়াত লোড করতে সমস্যা</div>';
+        ayahContainer.innerHTML = '<div class="text-red-400 text-center p-4">আয়াত লোড করতে সমস্যা। ইন্টারনেট চেক করুন।</div>';
         return;
       }
+
       const arabic = data.data.find(e => e.language === 'ar');
       const bengali = data.data.find(e => e.language === 'bn');
-      const english = data.data.find(e => e.language === 'en');
+      const translit = data.data.find(e => e.language === 'en' && e.format === 'text');
+
       let ayahs = '';
       if (arabic && arabic.ayahs) {
         arabic.ayahs.forEach((ayah, i) => {
           const bn = (bengali && bengali.ayahs && bengali.ayahs[i]) ? bengali.ayahs[i].text : '';
-          const en = (english && english.ayahs && english.ayahs[i]) ? english.ayahs[i].text : '';
-          ayahs += `<div class="mb-4 pb-3 border-b">
-            <div class="text-right text-lg font-arabic">${ayah.text}</div>
+          const trans = (translit && translit.ayahs && translit.ayahs[i]) ? translit.ayahs[i].text : '';
+          ayahs += `<div class="mb-4 pb-3 border-b border-gray-200">
+            <div class="text-right text-lg font-arabic leading-loose">${ayah.text}</div>
+            <div class="text-sm text-gray-600 mt-1">${trans}</div>
             <div class="text-sm text-gray-700 mt-1">${bn}</div>
-            <div class="text-xs text-gray-500 italic">${en}</div>
           </div>`;
         });
       }
-      ayahContainer.innerHTML = ayahs || '<div class="text-gray-400">আয়াত পাওয়া যায়নি</div>';
-      surahTitle.textContent = `${surah.number}. ${surah.name} (${surah.englishName})`;
-      quranViewer.classList.remove('hidden');
-      quranAudio.src = `https://everyayah.com/data/Abdul_Baset_Mujawwad_128kbps/${String(surah.number).padStart(3, '0')}001.mp3`;
-      quranAudio.load();
+      ayahContainer.innerHTML = ayahs || '<div class="text-gray-400 text-center py-4">আয়াত পাওয়া যায়নি</div>';
       quranViewer.scrollIntoView({ behavior: 'smooth' });
     }
 
     // Para navigation
     document.querySelectorAll('.para-btn').forEach(btn => {
       btn.addEventListener('click', function() {
+        document.querySelectorAll('.para-btn').forEach(b => b.classList.remove('active', 'bg-emerald-600', 'text-white'));
+        this.classList.add('active', 'bg-emerald-600', 'text-white');
         const para = parseInt(this.dataset.para);
         const start = (para - 1) * 7;
-        const end = para * 7;
+        const end = Math.min(para * 7, surahData.length);
         const filtered = surahData.slice(start, end);
         renderSurahList(filtered);
       });
     });
 
-    // ========== 3. HADITH (with Search) ==========
-async function loadHadith() {
-      // Using a free hadith API (sunnah.com)
-      const data = await fetchJson('https://api.sunnah.com/v1/collections/bukhari/books/1/hadiths?limit=50');
-      // Fallback static hadith if API fails
+    // ========== 3. HADITH ==========
+    async function loadHadith() {
       const fallback = [
         { text: 'নিশ্চয়ই কাজগুলো নিয়তের উপর নির্ভরশীল।', reference: 'বুখারী, ১' },
         { text: 'তোমাদের মধ্যে সেই উত্তম যে তার পরিবারের প্রতি উত্তম।', reference: 'তিরমিজি, ৩৮৯৫' },
@@ -358,17 +374,19 @@ async function loadHadith() {
         { text: 'আল্লাহর কাছে সবচেয়ে প্রিয় কাজ হলো সময়মতো নামাজ পড়া।', reference: 'বুখারী, ৫২৭' }
       ];
       
-      let hadiths = [];
-      if (data && data.data && data.data.length > 0) {
-        hadiths = data.data.map(h => ({ text: h.text, reference: h.reference || 'সূত্র: বুখারী' }));
-      } else {
-        hadiths = fallback;
+      try {
+        const data = await fetchJson('https://api.sunnah.com/v1/collections/bukhari/books/1/hadiths?limit=50');
+        if (data && data.data && data.data.length > 0) {
+          allHadith = data.data.map(h => ({ text: h.text, reference: h.reference || 'সূত্র: বুখারী' }));
+        } else {
+          allHadith = fallback;
+        }
+      } catch (e) {
+        allHadith = fallback;
       }
-      allHadith = hadiths;
-      renderHadith(hadiths);
-      // Set daily hadith
-      const randomIdx = Math.floor(Math.random() * hadiths.length);
-      dailyHadithText.textContent = hadiths[randomIdx]?.text || 'আজকের হাদিস লোড হয়নি';
+      renderHadith(allHadith);
+      const randomIdx = Math.floor(Math.random() * allHadith.length);
+      dailyHadithText.textContent = allHadith[randomIdx]?.text || 'আজকের হাদিস লোড হয়নি';
     }
 
     function renderHadith(hadiths) {
@@ -394,7 +412,8 @@ async function loadHadith() {
       const filtered = allHadith.filter(h => h.text.toLowerCase().includes(query.toLowerCase()));
       renderHadith(filtered);
     }
-// ========== 4. DUAS & AMAL ==========
+
+    // ========== 4. DUAS ==========
     function loadDuas() {
       const duas = [
         { title: 'সকালের দোয়া', arabic: 'اَللَّهُمَّ بِكَ أَصْبَحْنَا', bangla: 'হে আল্লাহ, আপনারই সাহায্যে আমরা সকাল করলাম' },
@@ -448,24 +467,7 @@ async function loadHadith() {
     let tasbeehVal = 0;
     function updateTasbeeh() { tasbeehCount.textContent = tasbeehVal; }
 
-    // ========== 6. SETTINGS: IMAGE UPLOAD ==========
-    function setupImageUpload() {
-      const changeBtn = document.getElementById('changeImageBtn');
-      const fileInput = document.getElementById('imageInput');
-      const imgElement = document.getElementById('developerImg');
-
-      changeBtn.addEventListener('click', () => fileInput.click());
-      fileInput.addEventListener('change', function(e) {
-        const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function(ev) {
-            imgElement.src = ev.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-    }// ========== 7. TABS ==========
+    // ========== 6. TABS ==========
     function setupTabs() {
       const tabs = document.querySelectorAll('.tab-btn');
       const contents = {
@@ -494,14 +496,12 @@ async function loadHadith() {
       });
     }
 
-    // ========== 8. EVENT LISTENERS ==========
+    // ========== 7. EVENT LISTENERS ==========
     function setupEventListeners() {
-      // Refresh prayer
       refreshBtn.addEventListener('click', async () => {
         await loadPrayerTimes(currentCity, currentCountry);
       });
 
-      // Quran search
       searchBtn.addEventListener('click', () => {
         const query = surahSearch.value.trim();
         if (!query) { renderSurahList(surahData); return; }
@@ -516,19 +516,15 @@ async function loadHadith() {
         if (e.key === 'Enter') searchBtn.click();
       });
 
-      // Close Quran viewer
       closeQuranBtn.addEventListener('click', () => {
         quranViewer.classList.add('hidden');
-        quranAudio.pause();
       });
 
-      // Hadith search
       searchHadithBtn.addEventListener('click', () => searchHadith(hadithSearch.value));
       hadithSearch.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') searchHadithBtn.click();
       });
 
-      // Tasbeeh
       tasbeehBtn.addEventListener('click', () => { tasbeehVal++; updateTasbeeh(); });
       resetTasbeeh.addEventListener('click', () => { tasbeehVal = 0; updateTasbeeh(); });
       incrementBtns.forEach(btn => {
@@ -539,10 +535,9 @@ async function loadHadith() {
       });
     }
 
-    // ========== 9. INIT ==========
+    // ========== 8. INIT ==========
     async function init() {
       setupTabs();
-      setupImageUpload();
       setupEventListeners();
       
       await loadPrayerTimes(currentCity, currentCountry);
