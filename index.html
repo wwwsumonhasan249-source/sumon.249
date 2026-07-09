@@ -3,37 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Muslims Day - ওয়েব অ্যাপ</title>
-  <!-- Tailwind CSS via CDN -->
+  <title>Muslims Day - সম্পূর্ণ ইসলামিক অ্যাপ</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* Custom smooth transitions */
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-    .surah-list { max-height: 400px; overflow-y: auto; }
-    .surah-item { cursor: pointer; padding: 8px 12px; border-bottom: 1px solid #eee; }
-    .surah-item:hover { background: #f0f7ff; }
-    #quranAudio { width: 100%; margin-top: 10px; }
-    .prayer-time-card { background: #f8fafc; border-radius: 12px; padding: 12px; margin: 6px 0; }
-    .prayer-label { font-weight: 600; color: #1e293b; }
-    .count-btn { width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #e2e8f0; cursor: pointer; }
-    .count-btn:hover { background: #cbd5e1; }
-    .qibla-box { width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #1e3a8a; border: 4px solid #3b82f6; }
+    .surah-list { max-height: 450px; overflow-y: auto; }
+    .surah-item { cursor: pointer; padding: 10px 14px; border-bottom: 1px solid #e5e7eb; transition: 0.2s; }
+    .surah-item:hover { background: #d1fae5; }
+    .prayer-card { background: #f8fafc; border-radius: 12px; padding: 12px; margin: 6px 0; display: flex; justify-content: space-between; }
+    .hadith-card { background: #fefce8; border-right: 4px solid #f59e0b; padding: 14px; border-radius: 8px; margin-bottom: 12px; }
     .developer-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #10b981; }
-    .contact-card { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .qibla-box { width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #1e3a8a; border: 4px solid #3b82f6; transition: transform 0.5s; }
+    .font-arabic { font-family: 'Amiri', 'Traditional Arabic', serif; }
+    #quranAudio { width: 100%; margin-top: 10px; }
+    .notification-badge { animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
   </style>
 </head>
 <body class="bg-gray-50 font-sans antialiased">
 
 <div id="app" class="max-w-md mx-auto bg-white shadow-xl min-h-screen relative">
   
-  <!-- Header with Logo -->
-  <header class="bg-gradient-to-r from-emerald-700 to-teal-600 text-white p-4 sticky top-0 z-10 shadow">
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-emerald-700 to-teal-600 text-white p-4 sticky top-0 z-20 shadow">
     <div class="flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <!-- MuslimsDayLogo SVG -->
         <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="bg-white/20 rounded-full p-1">
           <circle cx="50" cy="50" r="45" stroke="#FBBF24" stroke-width="6"/>
           <path d="M50 15 L58 40 L85 40 L65 55 L73 82 L50 67 L27 82 L35 55 L15 40 L42 40 L50 15Z" fill="#FBBF24"/>
@@ -41,50 +37,62 @@
         </svg>
         <h1 class="text-xl font-bold">Muslims Day</h1>
       </div>
-      <div class="flex gap-3 text-sm">
+      <div class="flex gap-2 text-xs">
         <span id="hijriDate" class="bg-white/20 px-3 py-1 rounded-full">হিজরি</span>
         <span id="gregDate" class="bg-white/20 px-3 py-1 rounded-full">গ্রেগরিয়ান</span>
       </div>
     </div>
+    <!-- Daily Hadith Notification -->
+    <div id="hadithNotification" class="mt-2 bg-amber-500/30 p-2 rounded-lg text-sm flex items-center gap-2">
+      <i class="fas fa-bell text-yellow-300 notification-badge"></i>
+      <span id="dailyHadithText">আজকের হাদিস লোড হচ্ছে...</span>
+    </div>
   </header>
 
-  <!-- Main Tabs -->
-  <div class="p-4">
+  <!-- Tabs -->
+  <div class="p-3">
     <div class="flex flex-wrap gap-1 justify-around border-b border-gray-200 pb-2">
       <button class="tab-btn active-tab px-3 py-2 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700" data-tab="prayer"><i class="fas fa-clock mr-1"></i> নামাজ</button>
       <button class="tab-btn px-3 py-2 text-xs font-medium rounded-full bg-gray-100 text-gray-600" data-tab="quran"><i class="fas fa-quran mr-1"></i> কুরআন</button>
+      <button class="tab-btn px-3 py-2 text-xs font-medium rounded-full bg-gray-100 text-gray-600" data-tab="hadith"><i class="fas fa-hadith mr-1"></i> হাদিস</button>
       <button class="tab-btn px-3 py-2 text-xs font-medium rounded-full bg-gray-100 text-gray-600" data-tab="dua"><i class="fas fa-hands-praying mr-1"></i> দোয়া</button>
       <button class="tab-btn px-3 py-2 text-xs font-medium rounded-full bg-gray-100 text-gray-600" data-tab="tools"><i class="fas fa-compass mr-1"></i> টুলস</button>
       <button class="tab-btn px-3 py-2 text-xs font-medium rounded-full bg-gray-100 text-gray-600" data-tab="settings"><i class="fas fa-cog mr-1"></i> সেটিংস</button>
     </div>
 
-    <!-- Tab Content: Prayer -->
-    <div id="prayer" class="tab-content active mt-4">
-      <div class="flex justify-between items-center mb-3">
-        <h2 class="text-lg font-semibold text-gray-800"><i class="fas fa-map-pin text-emerald-600 mr-1"></i> <span id="cityName">ঢাকা</span></h2>
-        <button id="refreshPrayer" class="text-sm bg-emerald-100 px-3 py-1 rounded-full text-emerald-700"><i class="fas fa-sync-alt mr-1"></i> রিফ্রেশ</button>
+    <!-- PRAYER TAB -->
+    <div id="prayer" class="tab-content active mt-3">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-md font-semibold"><i class="fas fa-map-pin text-emerald-600 mr-1"></i> <span id="cityName">ঢাকা</span></h2>
+        <button id="refreshPrayer" class="text-sm bg-emerald-100 px-3 py-1 rounded-full"><i class="fas fa-sync-alt mr-1"></i> রিফ্রেশ</button>
       </div>
-      <div id="prayerTimesContainer" class="space-y-2">
-        <div class="text-center text-gray-500 py-4"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</div>
-      </div>
-      <div class="mt-4 bg-amber-50 p-3 rounded-lg border border-amber-200 text-sm">
-        <p><i class="fas fa-sun text-amber-500 mr-2"></i> সেহরি: <span id="sehriTime">--</span>  |  ইফতার: <span id="iftarTime">--</span></p>
-        <p class="text-xs text-gray-600 mt-1">* রমজানের সময় সেহরি ও ইফতার দেখাবে</p>
+      <div id="prayerTimesContainer"></div>
+      <div class="grid grid-cols-2 gap-2 mt-3 text-sm bg-blue-50 p-3 rounded-lg">
+        <div><i class="fas fa-sunrise text-amber-500 mr-1"></i> সূর্যোদয়: <span id="sunriseTime">--</span></div>
+        <div><i class="fas fa-sunset text-amber-500 mr-1"></i> সূর্যাস্ত: <span id="sunsetTime">--</span></div>
+        <div><i class="fas fa-moon text-emerald-600 mr-1"></i> সেহরি: <span id="sehriTime">--</span></div>
+        <div><i class="fas fa-star text-emerald-600 mr-1"></i> ইফতার: <span id="iftarTime">--</span></div>
       </div>
     </div>
 
-    <!-- Tab Content: Quran -->
-    <div id="quran" class="tab-content mt-4">
+    <!-- QURAN TAB -->
+    <div id="quran" class="tab-content mt-3">
       <div class="flex gap-2 mb-3">
-        <input id="surahSearch" type="text" placeholder="সূরা অনুসন্ধান..." class="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400">
+        <input id="surahSearch" type="text" placeholder="সূরা বা আয়াত খুঁজুন..." class="flex-1 border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-emerald-400">
         <button id="searchSurahBtn" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm"><i class="fas fa-search"></i></button>
       </div>
-      <div id="surahList" class="surah-list border border-gray-200 rounded-lg divide-y">
-        <div class="text-center text-gray-400 py-6"><i class="fas fa-spinner fa-spin"></i> সূরা লোড হচ্ছে...</div>
+      <div class="flex gap-2 mb-3 overflow-x-auto">
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="1">পারা ১</button>
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="2">পারা ২</button>
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="3">পারা ৩</button>
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="4">পারা ৪</button>
+        <button class="para-btn bg-gray-200 px-3 py-1 rounded-full text-xs" data-para="5">পারা ৫</button>
+        <span class="text-gray-400 text-xs flex items-center">+ আরও</span>
       </div>
+      <div id="surahList" class="surah-list border rounded-lg divide-y"></div>
       <div id="quranViewer" class="mt-4 hidden">
         <div class="flex justify-between items-center mb-2">
-          <h3 id="surahTitle" class="text-lg font-bold text-gray-800"></h3>
+          <h3 id="surahTitle" class="text-lg font-bold"></h3>
           <button id="closeQuranView" class="text-red-500"><i class="fas fa-times"></i></button>
         </div>
         <div id="ayahContainer" class="bg-gray-50 p-3 rounded-lg max-h-80 overflow-y-auto text-sm leading-relaxed"></div>
@@ -92,88 +100,73 @@
       </div>
     </div>
 
-    <!-- Tab Content: Dua -->
-    <div id="dua" class="tab-content mt-4">
-      <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-hands-praying text-emerald-600 mr-2"></i>দৈনন্দিন দোয়া</h2>
-      <div id="duaList" class="space-y-4">
-        <div class="text-center text-gray-400 py-6"><i class="fas fa-spinner fa-spin"></i> দোয়া লোড হচ্ছে...</div>
+    <!-- HADITH TAB -->
+    <div id="hadith" class="tab-content mt-3">
+      <div class="flex gap-2 mb-3">
+        <input id="hadithSearch" type="text" placeholder="হাদিস অনুসন্ধান..." class="flex-1 border rounded-lg px-4 py-2 text-sm">
+        <button id="searchHadithBtn" class="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm"><i class="fas fa-search"></i></button>
       </div>
+      <div id="hadithList" class="space-y-3"></div>
     </div>
 
-    <!-- Tab Content: Tools -->
-    <div id="tools" class="tab-content mt-4">
-      <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-tools text-emerald-600 mr-2"></i>ইসলামিক টুলস</h2>
+    <!-- DUA TAB -->
+    <div id="dua" class="tab-content mt-3">
+      <h2 class="text-lg font-semibold mb-3"><i class="fas fa-hands-praying text-emerald-600 mr-2"></i>প্রয়োজনীয় দোয়া ও আমল</h2>
+      <div id="duaList" class="space-y-3"></div>
+    </div>
+
+    <!-- TOOLS TAB -->
+    <div id="tools" class="tab-content mt-3">
       <div class="grid grid-cols-2 gap-4">
         <div class="bg-blue-50 p-4 rounded-xl text-center">
           <div class="qibla-box" id="qiblaBox"><i class="fas fa-kaaba text-4xl text-blue-600"></i></div>
-          <p class="text-sm font-medium text-gray-700 mt-2">কিবলা দিক</p>
-          <p id="qiblaDirection" class="text-xs text-gray-500">উত্তর</p>
+          <p class="text-sm font-medium mt-2">কিবলা</p>
+          <p id="qiblaDirection" class="text-xs text-gray-500">লোকেশন দিন</p>
         </div>
         <div class="bg-amber-50 p-4 rounded-xl text-center">
-          <p class="text-sm font-medium text-gray-700">তাসবিহ</p>
+          <p class="text-sm font-medium">তাসবিহ</p>
           <div class="text-4xl font-bold text-amber-700 my-2" id="tasbeehCount">0</div>
-          <div class="flex justify-center gap-3">
-            <button class="count-btn bg-amber-200" id="tasbeehBtn"><i class="fas fa-plus"></i></button>
-            <button class="count-btn bg-gray-200" id="resetTasbeeh"><i class="fas fa-undo"></i></button>
+          <div class="flex justify-center gap-2">
+            <button class="count-btn bg-amber-200 w-10 h-10 rounded-full" id="tasbeehBtn"><i class="fas fa-plus"></i></button>
+            <button class="count-btn bg-gray-200 w-10 h-10 rounded-full" id="resetTasbeeh"><i class="fas fa-undo"></i></button>
           </div>
-          <div class="mt-2 flex gap-1 justify-center flex-wrap">
-            <button class="count-btn bg-amber-100 text-xs" data-increment="33">33</button>
-            <button class="count-btn bg-amber-100 text-xs" data-increment="99">99</button>
+          <div class="mt-2 flex gap-1 justify-center">
+            <button class="count-btn bg-amber-100 w-10 h-10 rounded-full text-xs" data-increment="33">৩৩</button>
+            <button class="count-btn bg-amber-100 w-10 h-10 rounded-full text-xs" data-increment="99">৯৯</button>
           </div>
         </div>
       </div>
-      <div class="mt-4 bg-indigo-50 p-3 rounded-lg border border-indigo-200">
-        <h4 class="font-semibold text-indigo-800"><i class="fas fa-calendar-alt mr-2"></i>ইসলামিক ইভেন্ট</h4>
-        <ul id="islamicEvents" class="text-sm text-gray-700 space-y-1 mt-1">
-          <li><span class="font-medium">শবে বরাত:</span> ১৫ শা'বান</li>
-          <li><span class="font-medium">শবে কদর:</span> ২৭ রমজান</li>
-          <li><span class="font-medium">ঈদুল ফিতর:</span> ১ শাওয়াল</li>
+      <div class="mt-4 bg-indigo-50 p-3 rounded-lg">
+        <h4 class="font-semibold"><i class="fas fa-calendar-alt mr-2"></i>ইসলামিক ইভেন্ট</h4>
+        <ul class="text-sm space-y-1 mt-1" id="islamicEvents">
+          <li>শবে বরাত: ১৫ শা'বান</li>
+          <li>শবে কদর: ২৭ রমজান</li>
+          <li>ঈদুল ফিতর: ১ শাওয়াল</li>
+          <li>ঈদুল আযহা: ১০ জিলহজ</li>
         </ul>
       </div>
     </div>
 
-    <!-- Tab Content: Settings (Developer & Contact) -->
-    <div id="settings" class="tab-content mt-4">
-      <h2 class="text-lg font-semibold text-gray-800 mb-4"><i class="fas fa-sliders-h text-emerald-600 mr-2"></i>সেটিংস</h2>
-      
-      <!-- Developer Section -->
-      <div class="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-200 mb-4">
-        <h3 class="font-bold text-gray-700 text-md flex items-center gap-2"><i class="fas fa-user-cog text-emerald-600"></i> ডেভেলপার</h3>
+    <!-- SETTINGS TAB -->
+    <div id="settings" class="tab-content mt-3">
+      <div class="bg-gray-50 p-4 rounded-xl shadow-sm border mb-4">
+        <h3 class="font-bold flex items-center gap-2"><i class="fas fa-user-cog text-emerald-600"></i> ডেভেলপার</h3>
         <div class="flex items-center gap-4 mt-3">
-          <img src="https://ui-avatars.com/api/?name=Rafiq+Islam&size=80&background=10b981&color=fff&font-size=0.5" alt="Developer" class="developer-img">
+          <img src="https://ui-avatars.com/api/?name=Md+Suman+Hasan&size=80&background=10b981&color=fff&font-size=0.5" alt="Developer" class="developer-img" id="developerImg">
           <div>
-            <p class="font-semibold text-gray-800 text-lg">রফিক ইসলাম</p>
-            <p class="text-sm text-gray-600">সিনিয়র ডেভেলপার</p>
-            <p class="text-xs text-gray-500 mt-1">Muslims Day v1.0</p>
+            <p class="font-semibold text-gray-800 text-lg">এমডি সুমন হাসান</p>
+            <p class="text-sm text-gray-600">ডেভেলপার</p>
+            <p class="text-xs text-gray-500">Muslims Day v2.0</p>
           </div>
         </div>
-        <p class="text-sm text-gray-600 mt-2 border-t border-gray-200 pt-2">
-          <i class="fas fa-info-circle text-emerald-600 mr-1"></i> 
-          এই অ্যাপটি সম্পূর্ণ ফ্রি এবং ওপেন-সোর্স। ইসলামিক জীবনযাত্রাকে সহজ করতে তৈরি।
-        </p>
-      </div>
-
-      <!-- Contact Section -->
-      <div class="contact-card p-4 rounded-xl shadow-sm">
-        <h3 class="font-bold text-gray-700 text-md flex items-center gap-2"><i class="fas fa-address-card text-emerald-600"></i> যোগাযোগ</h3>
-        <div class="space-y-3 mt-3 text-sm">
-          <div class="flex items-center gap-3">
-            <i class="fas fa-envelope text-emerald-600 w-5"></i>
-            <span class="text-gray-700">rafiq.islam@example.com</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <i class="fas fa-phone-alt text-emerald-600 w-5"></i>
-            <span class="text-gray-700">+880 1712-345678</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <i class="fab fa-whatsapp text-green-600 w-5"></i>
-            <span class="text-gray-700">+880 1712-345678 (WhatsApp)</span>
-          </div>
+        <div class="mt-3 pt-2 border-t text-sm space-y-1">
+          <p><i class="fas fa-envelope text-emerald-600 w-5"></i> suman.hasan@example.com</p>
+          <p><i class="fas fa-phone text-emerald-600 w-5"></i> ০১৯৬০ ৬৭ ৮৫ ৮৪</p>
+          <p><i class="fab fa-whatsapp text-green-600 w-5"></i> ০১৯৬০ ৬৭ ৮৫ ৮৪ (WhatsApp)</p>
         </div>
-        <p class="text-xs text-gray-500 mt-3 border-t border-green-200 pt-2">
-          <i class="fas fa-exclamation-triangle text-amber-500 mr-1"></i> 
-          কোনো সমস্যা বা পরামর্শ থাকলে উপরের যে কোনো মাধ্যমে জানাবেন।
-        </p>
+        <p class="text-xs text-gray-500 mt-2"><i class="fas fa-info-circle"></i> ছবি পরিবর্তন: নিচের বাটনে ক্লিক করুন</p>
+        <button id="changeImageBtn" class="mt-2 bg-emerald-600 text-white px-4 py-1 rounded-lg text-sm"><i class="fas fa-upload"></i> ছবি পরিবর্তন</button>
+        <input type="file" id="imageInput" accept="image/png,image/jpeg" class="hidden">
       </div>
     </div>
 
@@ -184,17 +177,19 @@
   (function() {
     'use strict';
 
-    // ---------- GLOBAL VARIABLES ----------
+    // ========== GLOBAL ==========
+    let surahData = [];
+    let allHadith = [];
     let currentCity = 'ঢাকা';
     let currentCountry = 'বাংলাদেশ';
-    let surahData = [];
-    let currentSurahIndex = 0;
 
-    // DOM references
+    // ========== DOM REFS ==========
     const prayerContainer = document.getElementById('prayerTimesContainer');
     const cityNameEl = document.getElementById('cityName');
     const sehriEl = document.getElementById('sehriTime');
     const iftarEl = document.getElementById('iftarTime');
+    const sunriseEl = document.getElementById('sunriseTime');
+    const sunsetEl = document.getElementById('sunsetTime');
     const hijriEl = document.getElementById('hijriDate');
     const gregEl = document.getElementById('gregDate');
     const refreshBtn = document.getElementById('refreshPrayer');
@@ -208,6 +203,11 @@
     const quranAudio = document.getElementById('quranAudio');
     const closeQuranBtn = document.getElementById('closeQuranView');
 
+    const hadithListEl = document.getElementById('hadithList');
+    const hadithSearch = document.getElementById('hadithSearch');
+    const searchHadithBtn = document.getElementById('searchHadithBtn');
+    const dailyHadithText = document.getElementById('dailyHadithText');
+
     const duaListEl = document.getElementById('duaList');
     const qiblaBox = document.getElementById('qiblaBox');
     const qiblaDir = document.getElementById('qiblaDirection');
@@ -216,7 +216,7 @@
     const resetTasbeeh = document.getElementById('resetTasbeeh');
     const incrementBtns = document.querySelectorAll('[data-increment]');
 
-    // ---------- HELPER: FETCH WITH ERROR ----------
+    // ========== FETCH HELPER ==========
     async function fetchJson(url) {
       try {
         const res = await fetch(url);
@@ -228,14 +228,13 @@
       }
     }
 
-    // ---------- 1. PRAYER TIMES & HIJRI ----------
+    // ========== 1. PRAYER TIMES ==========
     async function loadPrayerTimes(city = 'ঢাকা', country = 'বাংলাদেশ') {
       prayerContainer.innerHTML = `<div class="text-center text-gray-500 py-4"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</div>`;
-      const timestamp = Math.floor(Date.now() / 1000);
-      const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=2&timestamp=${timestamp}`;
+      const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=2`;
       const data = await fetchJson(url);
       if (!data || data.code !== 200) {
-        prayerContainer.innerHTML = `<div class="text-red-500 text-center p-4">ডেটা লোড করতে সমস্যা। ইন্টারনেট চেক করুন।</div>`;
+        prayerContainer.innerHTML = `<div class="text-red-500 text-center p-4">ডেটা লোড করতে সমস্যা</div>`;
         return;
       }
       const timings = data.data.timings;
@@ -243,33 +242,29 @@
       cityNameEl.textContent = city;
 
       const prayers = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-      const bengaliNames = ['ফজর', 'সূর্যোদয়', 'যোহর', 'আসর', 'মাগরিব', 'এশা'];
+      const names = ['ফজর', 'সূর্যোদয়', 'যোহর', 'আসর', 'মাগরিব', 'এশা'];
       let html = '';
-      prayers.forEach((p, idx) => {
-        const time = timings[p] || '--:--';
-        html += `<div class="prayer-time-card flex justify-between items-center">
-          <span class="prayer-label">${bengaliNames[idx]}</span>
-          <span class="font-mono text-emerald-700 font-bold">${time}</span>
-        </div>`;
+      prayers.forEach((p, i) => {
+        html += `<div class="prayer-card"><span>${names[i]}</span><span class="font-bold text-emerald-700">${timings[p] || '--'}</span></div>`;
       });
       prayerContainer.innerHTML = html;
 
-      sehriEl.textContent = timings['Imsak'] || timings['Fajr'] || '--:--';
-      iftarEl.textContent = timings['Maghrib'] || '--:--';
+      sehriEl.textContent = timings['Imsak'] || timings['Fajr'] || '--';
+      iftarEl.textContent = timings['Maghrib'] || '--';
+      sunriseEl.textContent = timings['Sunrise'] || '--';
+      sunsetEl.textContent = timings['Sunset'] || timings['Maghrib'] || '--';
 
       if (date) {
-        const h = date.hijri;
-        hijriEl.textContent = `${h.day} ${h.month.en} ${h.year}`;
-        const g = date.gregorian;
-        gregEl.textContent = `${g.day} ${g.month.en} ${g.year}`;
+        hijriEl.textContent = `${date.hijri.day} ${date.hijri.month.en} ${date.hijri.year}`;
+        gregEl.textContent = `${date.gregorian.day} ${date.gregorian.month.en} ${date.gregorian.year}`;
       }
     }
 
-    // ---------- 2. QURAN ----------
+    // ========== 2. QURAN (Full 30 Paras) ==========
     async function loadSurahList() {
       const data = await fetchJson('https://api.alquran.cloud/v1/surah');
       if (!data || data.code !== 200) {
-        surahListEl.innerHTML = `<div class="text-red-400 text-center p-4">সূরা লোড করা যায়নি</div>`;
+        surahListEl.innerHTML = '<div class="text-red-400 text-center p-4">লোড করতে সমস্যা</div>';
         return;
       }
       surahData = data.data;
@@ -278,13 +273,13 @@
 
     function renderSurahList(surahs) {
       if (!surahs || surahs.length === 0) {
-        surahListEl.innerHTML = `<div class="text-gray-400 text-center p-4">কোন সূরা পাওয়া যায়নি</div>`;
+        surahListEl.innerHTML = '<div class="text-gray-400 text-center p-4">কোন সূরা পাওয়া যায়নি</div>';
         return;
       }
       let html = '';
       surahs.forEach((s, idx) => {
         html += `<div class="surah-item flex justify-between" data-index="${idx}">
-          <span><span class="font-bold text-gray-700">${s.number}.</span> ${s.name}</span>
+          <span><span class="font-bold">${s.number}.</span> ${s.name}</span>
           <span class="text-gray-500 text-sm">${s.englishName}</span>
         </div>`;
       });
@@ -293,7 +288,6 @@
       document.querySelectorAll('.surah-item').forEach(el => {
         el.addEventListener('click', function() {
           const idx = parseInt(this.dataset.index);
-          currentSurahIndex = idx;
           loadAyahs(surahData[idx]);
         });
       });
@@ -301,22 +295,24 @@
 
     async function loadAyahs(surah) {
       if (!surah) return;
-      const number = surah.number;
-      const url = `https://api.alquran.cloud/v1/surah/${number}/editions/quran-uthmani,bn.bengali`;
+      const url = `https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani,bn.bengali,en.asad`;
       const data = await fetchJson(url);
       if (!data || data.code !== 200) {
         ayahContainer.innerHTML = '<div class="text-red-400">আয়াত লোড করতে সমস্যা</div>';
         return;
       }
-      const arabicEdition = data.data.find(e => e.format === 'text' && e.language === 'ar');
-      const bengaliEdition = data.data.find(e => e.format === 'text' && e.language === 'bn');
+      const arabic = data.data.find(e => e.language === 'ar');
+      const bengali = data.data.find(e => e.language === 'bn');
+      const english = data.data.find(e => e.language === 'en');
       let ayahs = '';
-      if (arabicEdition && arabicEdition.ayahs) {
-        arabicEdition.ayahs.forEach((ayah, i) => {
-          const bengaliAyah = (bengaliEdition && bengaliEdition.ayahs && bengaliEdition.ayahs[i]) ? bengaliEdition.ayahs[i].text : '';
-          ayahs += `<div class="mb-4 pb-3 border-b border-gray-200">
-            <div class="text-right text-lg leading-loose font-arabic">${ayah.text}</div>
-            <div class="text-sm text-gray-700 mt-1">${bengaliAyah}</div>
+      if (arabic && arabic.ayahs) {
+        arabic.ayahs.forEach((ayah, i) => {
+          const bn = (bengali && bengali.ayahs && bengali.ayahs[i]) ? bengali.ayahs[i].text : '';
+          const en = (english && english.ayahs && english.ayahs[i]) ? english.ayahs[i].text : '';
+          ayahs += `<div class="mb-4 pb-3 border-b">
+            <div class="text-right text-lg font-arabic">${ayah.text}</div>
+            <div class="text-sm text-gray-700 mt-1">${bn}</div>
+            <div class="text-xs text-gray-500 italic">${en}</div>
           </div>`;
         });
       }
@@ -325,30 +321,105 @@
       quranViewer.classList.remove('hidden');
       quranAudio.src = `https://everyayah.com/data/Abdul_Baset_Mujawwad_128kbps/${String(surah.number).padStart(3, '0')}001.mp3`;
       quranAudio.load();
-      document.getElementById('quranViewer').scrollIntoView({ behavior: 'smooth' });
+      quranViewer.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // ---------- 3. DUAS ----------
+    // Para navigation
+    document.querySelectorAll('.para-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const para = parseInt(this.dataset.para);
+        const start = (para - 1) * 7;
+        const end = para * 7;
+        const filtered = surahData.slice(start, end);
+        renderSurahList(filtered);
+      });
+    });
+
+    // ========== 3. HADITH (with Search) ==========
+async function loadHadith() {
+      // Using a free hadith API (sunnah.com)
+      const data = await fetchJson('https://api.sunnah.com/v1/collections/bukhari/books/1/hadiths?limit=50');
+      // Fallback static hadith if API fails
+      const fallback = [
+        { text: 'নিশ্চয়ই কাজগুলো নিয়তের উপর নির্ভরশীল।', reference: 'বুখারী, ১' },
+        { text: 'তোমাদের মধ্যে সেই উত্তম যে তার পরিবারের প্রতি উত্তম।', reference: 'তিরমিজি, ৩৮৯৫' },
+        { text: 'জান্নাতের চাবি হলো নামাজ।', reference: 'আহমদ, ৭২৩' },
+        { text: 'যে ব্যক্তি আল্লাহর পথে একদিন সওম পালন করবে, আল্লাহ তাকে জাহান্নাম থেকে ৭০ বছর দূরত্বে রাখবেন।', reference: 'বুখারী, ২৮৪০' },
+        { text: 'তোমরা পরস্পর হিংসা করো না, পরস্পর বিদ্বেষ করো না।', reference: 'মুসলিম, ২৫৬৪' },
+        { text: 'আল্লাহ তা‘আলা ক্ষমাশীল, তিনি ক্ষমা করতে পছন্দ করেন।', reference: 'তিরমিজি, ৩৪৩৯' },
+        { text: 'যে ব্যক্তি আল্লাহর সন্তুষ্টির জন্য মসজিদ নির্মাণ করে, আল্লাহ তার জন্য জান্নাতে একটি ঘর নির্মাণ করেন।', reference: 'বুখারী, ৪৫০' },
+        { text: 'তোমাদের মধ্যে সেই উত্তম যে কুরআন শিক্ষা করে এবং অন্যদের শিক্ষা দেয়।', reference: 'বুখারী, ৫০২৭' },
+        { text: 'পাঁচ ওয়াক্ত নামাজ এবং এক জুমুআ থেকে পরবর্তী জুমুআ, এগুলোর মধ্যে গুনাহ মাফ হয়ে যায়।', reference: 'মুসলিম, ২৩৩' },
+        { text: 'রমজান মাসে যারা রোজা রাখে এবং রাতে কিয়াম করে, তাদের গুনাহ মাফ করে দেওয়া হয়।', reference: 'বুখারী, ২০০৮' },
+        { text: 'হালাল স্পষ্ট এবং হারামও স্পষ্ট।', reference: 'বুখারী, ৫২' },
+        { text: 'তোমাদের কেউ যেন তার ভাইয়ের সঙ্গে ঝগড়া না করে।', reference: 'বুখারী, ৬০৮৩' },
+        { text: 'শান্তি বিস্তার কর, মানুষকে খাবার দাও এবং রাতে নামাজ পড়।', reference: 'তিরমিজি, ২৪৮৫' },
+        { text: 'জান্নাতের অধিবাসীরা হবে নরম ও বিনয়ী।', reference: 'মুসলিম, ৬৮২০' },
+        { text: 'আল্লাহর কাছে সবচেয়ে প্রিয় কাজ হলো সময়মতো নামাজ পড়া।', reference: 'বুখারী, ৫২৭' }
+      ];
+      
+      let hadiths = [];
+      if (data && data.data && data.data.length > 0) {
+        hadiths = data.data.map(h => ({ text: h.text, reference: h.reference || 'সূত্র: বুখারী' }));
+      } else {
+        hadiths = fallback;
+      }
+      allHadith = hadiths;
+      renderHadith(hadiths);
+      // Set daily hadith
+      const randomIdx = Math.floor(Math.random() * hadiths.length);
+      dailyHadithText.textContent = hadiths[randomIdx]?.text || 'আজকের হাদিস লোড হয়নি';
+    }
+
+    function renderHadith(hadiths) {
+      if (!hadiths || hadiths.length === 0) {
+        hadithListEl.innerHTML = '<div class="text-gray-400 text-center py-4">কোন হাদিস পাওয়া যায়নি</div>';
+        return;
+      }
+      let html = '';
+      hadiths.forEach(h => {
+        html += `<div class="hadith-card">
+          <p class="text-gray-800">${h.text}</p>
+          <p class="text-xs text-gray-500 mt-1">${h.reference || 'সূত্র: বুখারী'}</p>
+        </div>`;
+      });
+      hadithListEl.innerHTML = html;
+    }
+
+    function searchHadith(query) {
+      if (!query.trim()) {
+        renderHadith(allHadith);
+        return;
+      }
+      const filtered = allHadith.filter(h => h.text.toLowerCase().includes(query.toLowerCase()));
+      renderHadith(filtered);
+    }
+// ========== 4. DUAS & AMAL ==========
     function loadDuas() {
       const duas = [
         { title: 'সকালের দোয়া', arabic: 'اَللَّهُمَّ بِكَ أَصْبَحْنَا', bangla: 'হে আল্লাহ, আপনারই সাহায্যে আমরা সকাল করলাম' },
         { title: 'সন্ধ্যার দোয়া', arabic: 'اَللَّهُمَّ بِكَ أَمْسَيْنَا', bangla: 'হে আল্লাহ, আপনারই সাহায্যে আমরা সন্ধ্যা করলাম' },
-        { title: 'খাবার পূর্বে দোয়া', arabic: 'بِسْمِ اللَّهِ', bangla: 'আল্লাহর নামে (শুরু করছি)' },
-        { title: 'খাবার পর দোয়া', arabic: 'اَلْحَمْدُ لِلَّهِ', bangla: 'সমস্ত প্রশংসা আল্লাহর জন্য' },
+        { title: 'খাবারের পূর্বে', arabic: 'بِسْمِ اللَّهِ', bangla: 'আল্লাহর নামে (শুরু করছি)' },
+        { title: 'খাবারের পর', arabic: 'اَلْحَمْدُ لِلَّهِ', bangla: 'সমস্ত প্রশংসা আল্লাহর জন্য' },
         { title: 'ঘুমানোর দোয়া', arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ', bangla: 'হে আল্লাহ, আপনারই নামে মরি ও বাঁচি' },
+        { title: 'মসজিদে প্রবেশ', arabic: 'اَللَّهُمَّ افْتَحْ لِي', bangla: 'হে আল্লাহ, আমার জন্য দরজা খুলে দিন' },
+        { title: 'মসজিদ থেকে বের হওয়া', arabic: 'اَللَّهُمَّ إِنِّي أَسْأَلُكَ', bangla: 'হে আল্লাহ, আমি আপনার কাছে প্রার্থনা করি' },
+        { title: 'আমল: সুরা ইখলাস পড়া', arabic: 'قُلْ هُوَ اللَّهُ أَحَدٌ', bangla: 'সুরা ইখলাস ৩ বার পড়লে কুরআন খতমের সওয়াব' },
+        { title: 'আমল: দরুদ শরীফ', arabic: 'اَللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ', bangla: '১০ বার দরুদ পড়লে ১০টি পুণ্য' },
+        { title: 'আমল: ইস্তিগফার', arabic: 'أَسْتَغْفِرُ اللَّهَ', bangla: '৭০ বার ইস্তিগফার করলে গুনাহ মাফ' }
       ];
       let html = '';
       duas.forEach(d => {
-        html += `<div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-          <h4 class="font-semibold text-gray-800">${d.title}</h4>
-          <p class="text-right text-lg font-arabic mt-1">${d.arabic}</p>
+        html += `<div class="bg-gray-50 p-3 rounded-lg border">
+          <h4 class="font-semibold">${d.title}</h4>
+          <p class="text-right text-lg font-arabic">${d.arabic}</p>
           <p class="text-sm text-gray-600">${d.bangla}</p>
         </div>`;
       });
       duaListEl.innerHTML = html;
     }
 
-    // ---------- 4. TOOLS ----------
+    // ========== 5. TOOLS ==========
     function initQibla() {
       if (!navigator.geolocation) {
         qiblaDir.textContent = 'জিওলোকেশন সাপোর্ট করে না';
@@ -375,30 +446,32 @@
     }
 
     let tasbeehVal = 0;
-    function updateTasbeehDisplay() {
-      tasbeehCount.textContent = tasbeehVal;
-    }
+    function updateTasbeeh() { tasbeehCount.textContent = tasbeehVal; }
 
-    // ---------- 5. SEARCH ----------
-    function searchSurah(query) {
-      if (!query.trim()) {
-        renderSurahList(surahData);
-        return;
-      }
-      const filtered = surahData.filter(s => 
-        s.name.toLowerCase().includes(query.toLowerCase()) || 
-        s.englishName.toLowerCase().includes(query.toLowerCase()) ||
-        s.number.toString().includes(query)
-      );
-      renderSurahList(filtered);
-    }
+    // ========== 6. SETTINGS: IMAGE UPLOAD ==========
+    function setupImageUpload() {
+      const changeBtn = document.getElementById('changeImageBtn');
+      const fileInput = document.getElementById('imageInput');
+      const imgElement = document.getElementById('developerImg');
 
-    // ---------- 6. TABS ----------
+      changeBtn.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', function(e) {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            imgElement.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }// ========== 7. TABS ==========
     function setupTabs() {
       const tabs = document.querySelectorAll('.tab-btn');
       const contents = {
         prayer: document.getElementById('prayer'),
         quran: document.getElementById('quran'),
+        hadith: document.getElementById('hadith'),
         dua: document.getElementById('dua'),
         tools: document.getElementById('tools'),
         settings: document.getElementById('settings')
@@ -419,49 +492,69 @@
           if (contents[tabId]) contents[tabId].classList.add('active');
         });
       });
-    }// ---------- 7. INIT ----------
-    async function init() {
-      setupTabs();
-      await loadPrayerTimes(currentCity, currentCountry);
-      await loadSurahList();
-      loadDuas();
+    }
 
-      tasbeehBtn.addEventListener('click', () => { tasbeehVal++; updateTasbeehDisplay(); });
-      resetTasbeeh.addEventListener('click', () => { tasbeehVal = 0; updateTasbeehDisplay(); });
-      incrementBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const inc = parseInt(this.dataset.increment);
-          tasbeehVal += inc;
-          updateTasbeehDisplay();
-        });
+    // ========== 8. EVENT LISTENERS ==========
+    function setupEventListeners() {
+      // Refresh prayer
+      refreshBtn.addEventListener('click', async () => {
+        await loadPrayerTimes(currentCity, currentCountry);
       });
 
-      searchBtn.addEventListener('click', () => searchSurah(surahSearch.value));
+      // Quran search
+      searchBtn.addEventListener('click', () => {
+        const query = surahSearch.value.trim();
+        if (!query) { renderSurahList(surahData); return; }
+        const filtered = surahData.filter(s => 
+          s.name.toLowerCase().includes(query.toLowerCase()) || 
+          s.englishName.toLowerCase().includes(query.toLowerCase()) ||
+          s.number.toString().includes(query)
+        );
+        renderSurahList(filtered);
+      });
       surahSearch.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') searchSurah(surahSearch.value);
+        if (e.key === 'Enter') searchBtn.click();
       });
 
+      // Close Quran viewer
       closeQuranBtn.addEventListener('click', () => {
         quranViewer.classList.add('hidden');
         quranAudio.pause();
       });
 
-      refreshBtn.addEventListener('click', async () => {
-        await loadPrayerTimes(currentCity, currentCountry);
+      // Hadith search
+      searchHadithBtn.addEventListener('click', () => searchHadith(hadithSearch.value));
+      hadithSearch.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') searchHadithBtn.click();
       });
 
+      // Tasbeeh
+      tasbeehBtn.addEventListener('click', () => { tasbeehVal++; updateTasbeeh(); });
+      resetTasbeeh.addEventListener('click', () => { tasbeehVal = 0; updateTasbeeh(); });
+      incrementBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          tasbeehVal += parseInt(this.dataset.increment);
+          updateTasbeeh();
+        });
+      });
+    }
+
+    // ========== 9. INIT ==========
+    async function init() {
+      setupTabs();
+      setupImageUpload();
+      setupEventListeners();
+      
+      await loadPrayerTimes(currentCity, currentCountry);
+      await loadSurahList();
+      await loadHadith();
+      loadDuas();
       initQibla();
-      updateTasbeehDisplay();
+      updateTasbeeh();
     }
 
     init();
   })();
 </script>
-
-<!-- Add Arabic font -->
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  .font-arabic { font-family: 'Amiri', 'Traditional Arabic', serif; }
-</style>
 </body>
 </html>
