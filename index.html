@@ -3,241 +3,335 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>সার্চ ইঞ্জিন</title>
+    <title>কুরআন ও হাদিস প্ল্যাটফর্ম</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
         body {
-            background: #0f0f0f;
-            color: white;
+            background: linear-gradient(135deg, #0d1b2a, #1b2f3f);
+            color: #e0e0e0;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            padding: 20px;
         }
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            background: #0f0f0f;
-            padding: 12px 20px 10px;
-            border-bottom: 1px solid #2a2a2a;
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        .container { max-width: 1200px; margin: 0 auto; width: 100%; }
+
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 8px;
+            text-align: center;
+            background: rgba(255,255,255,0.04);
+            padding: 18px 24px;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 20px;
         }
-        .header h1 { font-size: 22px; }
-        .dev-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #2a2a2a;
-            color: white;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
+        .header h1 {
+            font-size: 28px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .dev-btn:hover { background: #3b82f6; }
-        .banner-area {
-            width: 100%;
-            border-radius: 14px;
-            overflow: hidden;
-            margin-bottom: 10px;
-            background: #1a1a2e;
-            min-height: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .header p {
+            color: #888;
+            font-size: 14px;
+            margin-top: 4px;
         }
-        .banner-area img {
-            width: 100%;
-            max-height: 180px;
-            object-fit: cover;
-            display: block;
-        }
+
+        /* ===== ট্যাব ===== */
         .tab-bar {
             display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 10px;
             flex-wrap: wrap;
+            margin-bottom: 20px;
+            justify-content: center;
         }
-        .tab {
-            padding: 5px 14px;
-            border-radius: 30px;
-            cursor: pointer;
-            background: #272727;
-            border: none;
-            color: white;
-            font-size: 13px;
-        }
-        .tab.active { background: #1a73e8; }
-        .search-area {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .search-area input {
-            flex: 3;
-            min-width: 140px;
-            padding: 8px 14px;
+        .tab-btn {
+            padding: 10px 24px;
             border-radius: 50px;
-            border: none;
-            font-size: 14px;
-            background: #272727;
-            color: white;
-        }
-        .search-area input::placeholder { color: #888; }
-        .search-area button {
-            padding: 8px 18px;
-            border-radius: 50px;
-            border: none;
-            font-size: 14px;
-            background: #1a73e8;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .search-area button:hover { background: #1557b0; }
-        #resultsContainer {
-            max-height: 260px;
-            overflow-y: auto;
-            margin-bottom: 8px;
-            background: #1a1a2e;
-            border-radius: 12px;
-            padding: 6px;
-        }
-        #resultsContainer::-webkit-scrollbar { width: 4px; }
-        #resultsContainer::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
-        .result-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-            border-bottom: 1px solid #2a2a2a;
-        }
-        .result-item:hover { background: #2a2a2a; }
-        .result-item .icon { font-size: 16px; width: 26px; text-align: center; }
-        .result-item .info { flex: 1; overflow: hidden; }
-        .result-item .info .title {
-            font-size: 13px;
-            color: #1a73e8;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .result-item .info .url {
-            font-size: 10px;
-            color: #666;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .result-item .load-btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 3px 12px;
-            border-radius: 30px;
-            font-size: 10px;
-            cursor: pointer;
-        }
-        .result-item .load-btn:hover { background: #2563eb; }
-        .loading { color: #aaa; text-align: center; padding: 16px; font-size: 13px; }
-        .no-result { color: #aaa; text-align: center; padding: 16px; font-size: 13px; }
-        .viewer-wrapper {
-            flex: 1;
-            background: #ffffff;
-            border-radius: 16px 16px 0 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 300px;
-            position: relative;
-        }
-        .viewer-wrapper .viewer-header {
-            background: #1e1e1e;
-            padding: 6px 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
-        }
-        .viewer-wrapper .viewer-header .url-display {
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.04);
             color: #aaa;
-            font-size: 11px;
-            flex: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            margin-right: 8px;
-        }
-        .viewer-wrapper .viewer-header .close-viewer {
-            background: #ff4444;
-            border: none;
-            color: white;
-            padding: 3px 12px;
-            border-radius: 30px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
         }
-        .viewer-wrapper .viewer-header .close-viewer:hover { background: #cc0000; }
-        .viewer-wrapper iframe {
-            flex: 1;
-            width: 100%;
-            border: none;
-            background: white;
+        .tab-btn:hover {
+            background: rgba(46,204,113,0.1);
+            color: #2ecc71;
         }
-        .viewer-placeholder {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            font-size: 16px;
-            background: #1a1a2e;
-            flex-direction: column;
-            gap: 8px;
+        .tab-btn.active {
+            background: #2ecc71;
+            color: #000;
+            border-color: #2ecc71;
         }
-        .viewer-placeholder .big-icon { font-size: 40px; }
-        .error-box {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #1a1a2e;
-            color: #ff6b6b;
-            padding: 30px;
+
+        /* ===== সূরা বাটন গ্রিড ===== */
+        .surah-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .surah-grid .surah-btn {
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.04);
+            color: #ccc;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
             text-align: center;
         }
-        .error-box .error-icon { font-size: 48px; margin-bottom: 12px; }
-        .error-box .error-title { font-size: 18px; color: white; margin-bottom: 6px; }
-        .error-box .error-msg { font-size: 13px; color: #aaa; margin-bottom: 16px; }
-        .error-box .error-btn {
-            background: #3b82f6;
+        .surah-grid .surah-btn:hover {
+            background: rgba(46,204,113,0.15);
+            color: #2ecc71;
+            border-color: rgba(46,204,113,0.2);
+            transform: translateY(-2px);
+        }
+        .surah-grid .surah-btn .ar {
+            font-size: 16px;
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            display: block;
+            color: #fff;
+        }
+        .surah-grid .surah-btn .bn {
+            font-size: 12px;
+            color: #888;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ===== সার্চ ===== */
+        .search-box {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 14px 18px;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 16px;
+        }
+        .search-box .input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .search-box .input-group input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.04);
             color: white;
+            font-size: 15px;
+            outline: none;
+            min-width: 150px;
+        }
+        .search-box .input-group input:focus {
+            border-color: #2ecc71;
+        }
+        .search-box .input-group input::placeholder {
+            color: #555;
+        }
+        .search-box .input-group button {
+            background: #2ecc71;
+            color: #000;
             border: none;
-            padding: 8px 24px;
+            padding: 9px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .search-box .input-group button:hover {
+            transform: scale(1.03);
+            background: #27ae60;
+        }
+
+        /* ===== কন্টেন্ট ===== */
+        .content-area {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.06);
+            min-height: 200px;
+        }
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            display: none;
+        }
+        .loading.show {
+            display: block;
+        }
+        .no-result {
+            text-align: center;
+            padding: 30px;
+            color: #555;
+            display: none;
+        }
+        .no-result.show {
+            display: block;
+        }
+        .no-result .icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        /* ===== সূরা ভিউ ===== */
+        .surah-view .surah-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2ecc71;
+            margin-bottom: 4px;
+        }
+        .surah-view .surah-name .bn {
+            color: #fff;
+        }
+        .surah-view .surah-info {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 14px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .surah-view .surah-info span {
+            background: rgba(255,255,255,0.04);
+            padding: 2px 12px;
+            border-radius: 30px;
+        }
+        .surah-view .ayah {
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 6px;
+            border-right: 3px solid rgba(46,204,113,0.3);
+        }
+        .surah-view .ayah .arabic {
+            font-size: 20px;
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            direction: rtl;
+            text-align: right;
+            color: #fff;
+            line-height: 1.8;
+        }
+        .surah-view .ayah .translation {
+            font-size: 14px;
+            color: #bbb;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .back-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #aaa;
+            padding: 6px 18px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 14px;
-            margin: 4px;
+            font-size: 13px;
+            margin-bottom: 14px;
+            transition: 0.3s;
         }
-        .error-box .error-btn:hover { background: #2563eb; }
-        .error-box .error-btn.green { background: #22c55e; }
-        .error-box .error-btn.green:hover { background: #16a34a; }
+        .back-btn:hover {
+            background: rgba(46,204,113,0.15);
+            color: #2ecc71;
+        }
+
+        /* ===== হাদিস ===== */
+        .hadith-card {
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 14px;
+            margin-bottom: 8px;
+            border-left: 3px solid #2ecc71;
+        }
+        .hadith-card .h-narrator {
+            font-size: 12px;
+            color: #2ecc71;
+            font-weight: 600;
+        }
+        .hadith-card .h-text {
+            font-size: 14px;
+            color: #ddd;
+            margin: 4px 0;
+            line-height: 1.6;
+        }
+        .hadith-card .h-ref {
+            font-size: 11px;
+            color: #666;
+        }
+        .hadith-card .h-arabic {
+            font-size: 16px;
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            direction: rtl;
+            text-align: right;
+            color: #fff;
+            margin: 4px 0;
+            line-height: 1.6;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 14px;
+        }
+        .pagination button {
+            padding: 5px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.04);
+            color: #aaa;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+        .pagination button:hover {
+            background: rgba(46,204,113,0.15);
+            color: #2ecc71;
+        }
+        .pagination button.active {
+            background: #2ecc71;
+            color: #000;
+            border-color: #2ecc71;
+        }
+
+        /* ===== ডেভেলপার ===== */
+        .dev-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .dev-btn:hover {
+            background: rgba(46,204,113,0.25);
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -245,51 +339,58 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(6px);
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
             justify-content: center;
             align-items: center;
             z-index: 9999;
         }
-        .modal-overlay.show { display: flex; }
+        .modal-overlay.show {
+            display: flex;
+        }
         .modal-box {
-            background: #1e1e1e;
+            background: #1a2a3a;
             border-radius: 24px;
             padding: 30px 24px 24px;
             max-width: 380px;
             width: 90%;
             text-align: center;
-            border: 1px solid #333;
+            border: 1px solid rgba(255,255,255,0.08);
         }
         .modal-box .avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
             margin: 0 auto 12px;
-            background: #2a2a2a;
+            background: #2a3a4a;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
             color: #888;
-            border: 3px solid #3b82f6;
+            border: 3px solid #2ecc71;
             overflow: hidden;
         }
         .modal-box .avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
-        .modal-box .avatar .no-photo { font-size: 40px; }
-        .modal-box h2 { font-size: 20px; margin-bottom: 2px; }
-        .modal-box .role { color: #aaa; font-size: 13px; margin-bottom: 14px; }
+        .modal-box h2 {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+        .modal-box .role {
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
         .modal-box .contact-item {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background: #2a2a2a;
+            background: rgba(255,255,255,0.05);
             padding: 8px 14px;
             border-radius: 50px;
             margin-bottom: 6px;
@@ -298,7 +399,10 @@
             color: white;
             transition: 0.2s;
         }
-        .modal-box .contact-item:hover { background: #3b82f6; }
+        .modal-box .contact-item:hover {
+            background: #2ecc71;
+            color: #000;
+        }
         .modal-close {
             background: #ff4444;
             border: none;
@@ -309,67 +413,66 @@
             cursor: pointer;
             font-size: 14px;
         }
-        .modal-close:hover { background: #cc0000; }
+        .modal-close:hover {
+            background: #cc0000;
+        }
+
         @media (max-width:600px) {
-            .sticky-header { padding: 8px 10px; }
-            .header h1 { font-size: 18px; }
-            .search-area input { min-width: 100px; font-size: 13px; }
-            .result-item .info .title { font-size: 12px; }
-            .viewer-wrapper { min-height: 200px; }
-            #resultsContainer { max-height: 180px; }
-            .modal-box .avatar { width: 80px; height: 80px; font-size: 32px; }
+            .header h1 { font-size: 22px; }
+            .tab-btn { padding: 8px 16px; font-size: 12px; }
+            .surah-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+            .surah-grid .surah-btn { padding: 8px 10px; font-size: 12px; }
+            .content-area { padding: 16px; }
+            .surah-view .ayah .arabic { font-size: 17px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sticky-header">
-        <div class="container">
-            <div class="header">
-                <h1>🔍 সার্চ ইঞ্জিন</h1>
-                <button class="dev-btn" id="devInfoBtn">👤</button>
-            </div>
-            <div class="banner-area" id="bannerArea">
-                <img id="bannerImage" style="display:none;" alt="ব্যানার" />
-            </div>
-            <div class="tab-bar">
-                <button class="tab active" data-tab="web">🌐 ওয়েব</button>
-                <button class="tab" data-tab="video">🎬 ভিডিও</button>
-            </div>
-            <div class="search-area">
-                <input type="text" id="searchInput" placeholder="যা খুঁজতে চান লিখুন..." />
+    <div class="container">
+
+        <div class="header">
+            <h1>📖 ইসলামিক কন্টেন্ট</h1>
+            <p>কুরআন ও হাদিস — আরবি ও বাংলা অনুবাদ সহ</p>
+        </div>
+
+        <!-- ===== ট্যাব ===== -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="quran">📖 কুরআন</button>
+            <button class="tab-btn" data-tab="bukhari">📚 বুখারী</button>
+            <button class="tab-btn" data-tab="muslim">📚 মুসলিম</button>
+            <button class="tab-btn" data-tab="tirmidhi">📚 তিরমিজি</button>
+            <button class="tab-btn" data-tab="abudawud">📚 আবু দাউদ</button>
+        </div>
+
+        <!-- ===== সার্চ ===== -->
+        <div class="search-box">
+            <div class="input-group">
+                <input type="text" id="searchInput" placeholder="সূরা নাম বা হাদিসের কীওয়ার্ড..." />
                 <button id="searchBtn">🔍 সার্চ</button>
             </div>
-            <div id="resultsContainer"></div>
         </div>
-    </div>
 
-    <div class="viewer-wrapper" id="viewerWrapper">
-        <div class="viewer-header" id="viewerHeader" style="display:none;">
-            <span class="url-display" id="currentUrlDisplay">https://example.com</span>
-            <button class="close-viewer" id="closeViewerBtn">✕ বন্ধ</button>
-        </div>
-        <div class="viewer-placeholder" id="viewerPlaceholder">
-            <div class="big-icon">🌐</div>
-            <div>সার্চ করে যেকোনো লিংকে ক্লিক করুন</div>
-        </div>
-        <div class="error-box" id="errorBox">
-            <div class="error-icon">🚫</div>
-            <div class="error-title">ওয়েবসাইট লোড করা সম্ভব নয়</div>
-            <div class="error-msg" id="errorMsg">এই ওয়েবসাইটটি iframe-এ লোড হতে বাধা দেয়।</div>
-            <div>
-                <button class="error-btn green" id="openNewTabBtn">🔗 নতুন ট্যাবে খুলুন</button>
-                <button class="error-btn" id="errorCloseBtn">✕ বন্ধ করুন</button>
+        <!-- ===== কন্টেন্ট ===== -->
+        <div class="content-area" id="contentArea">
+            <div class="loading" id="loading">⏳ লোড হচ্ছে...</div>
+            <div id="resultContainer"></div>
+            <div class="no-result" id="noResult">
+                <div class="icon">📭</div>
+                <p>কোনো ফলাফল পাওয়া যায়নি।</p>
             </div>
+            <div class="pagination" id="pagination"></div>
         </div>
-        <iframe id="viewerIframe" style="display:none; flex:1; width:100%; border:none; background:white;"></iframe>
+
     </div>
 
+    <!-- ===== ডেভেলপার ===== -->
+    <button class="dev-btn" id="devBtn">👤</button>
     <div class="modal-overlay" id="devModal">
         <div class="modal-box">
-            <div class="avatar" id="avatarContainer">
+            <div class="avatar" id="devAvatarContainer">
                 <img id="devPhoto" style="display:none;" alt="প্রোফাইল" />
-                <span class="no-photo" id="noPhotoPlaceholder">👤</span>
+                <span class="no-photo" id="devPlaceholder">👤</span>
             </div>
             <h2 id="devName">আপনার নাম</h2>
             <p class="role" id="devRole">🛠️ ওয়েব ডেভেলপার</p>
@@ -382,13 +485,483 @@
 
     <script>
         // ================================================================
-        // ফাইল পাথ
+        // 📚 কুরআনের সূরা তালিকা (১১৪টি)
         // ================================================================
-        var BANNER_PATH = 'banner-photo.jpg';
-        var PROFILE_PATH = 'profile-photo.jpg';
+        var SURAH_NAMES = [
+            { num: 1, ar: 'الْفَاتِحَة', bn: 'ফাতিহা' },
+            { num: 2, ar: 'الْبَقَرَة', bn: 'বাকারা' },
+            { num: 3, ar: 'آلِ عِمْرَان', bn: 'ইমরান' },
+            { num: 4, ar: 'النِّسَاء', bn: 'নিসা' },
+            { num: 5, ar: 'الْمَائِدَة', bn: 'মায়িদা' },
+            { num: 6, ar: 'الْأَنْعَام', bn: 'আনআম' },
+            { num: 7, ar: 'الْأَعْرَاف', bn: 'আরাফ' },
+            { num: 8, ar: 'الْأَنْفَال', bn: 'আনফাল' },
+            { num: 9, ar: 'التَّوْبَة', bn: 'তওবাহ' },
+            { num: 10, ar: 'يُونُس', bn: 'ইউনুস' },
+            { num: 11, ar: 'هُود', bn: 'হুদ' },
+            { num: 12, ar: 'يُوسُف', bn: 'ইউসুফ' },
+            { num: 13, ar: 'الرَّعْد', bn: 'রাদ' },
+            { num: 14, ar: 'إِبْرَاهِيم', bn: 'ইব্রাহিম' },
+            { num: 15, ar: 'الْحِجْر', bn: 'হিজর' },
+            { num: 16, ar: 'النَّحْل', bn: 'নাহল' },
+            { num: 17, ar: 'بَنِي إِسْرَائِيل', bn: 'বনী ইসরাঈল' },
+            { num: 18, ar: 'الْكَهْف', bn: 'কাহফ' },
+            { num: 19, ar: 'مَرْيَم', bn: 'মারিয়াম' },
+            { num: 20, ar: 'طه', bn: 'ত্বোয়াহা' },
+            { num: 21, ar: 'الْأَنْبِيَاء', bn: 'আম্বিয়া' },
+            { num: 22, ar: 'الْحَجّ', bn: 'হজ্জ' },
+            { num: 23, ar: 'الْمُؤْمِنُونَ', bn: 'মুমিনুন' },
+            { num: 24, ar: 'النُّور', bn: 'নূর' },
+            { num: 25, ar: 'الْفُرْقَان', bn: 'ফুরকান' },
+            { num: 26, ar: 'الشُّعَرَاء', bn: 'শুয়ারা' },
+            { num: 27, ar: 'النَّمْل', bn: 'নামল' },
+            { num: 28, ar: 'الْقَصَص', bn: 'কাসাস' },
+            { num: 29, ar: 'الْعَنْكَبُوت', bn: 'আনকাবুত' },
+            { num: 30, ar: 'الرُّوم', bn: 'রুম' },
+            { num: 31, ar: 'لُقْمَان', bn: 'লুকমান' },
+            { num: 32, ar: 'السَّجْدَة', bn: 'সাজদাহ' },
+            { num: 33, ar: 'الْأَحْزَاب', bn: 'আহযাব' },
+            { num: 34, ar: 'سَبَأ', bn: 'সাবা' },
+            { num: 35, ar: 'فَاطِر', bn: 'ফাতির' },
+            { num: 36, ar: 'يس', bn: 'ইয়াসিন' },
+            { num: 37, ar: 'الصَّافَّات', bn: 'সাফফাত' },
+            { num: 38, ar: 'ص', bn: 'সোয়াদ' },
+            { num: 39, ar: 'الزُّمَر', bn: 'যুমার' },
+            { num: 40, ar: 'غَافِر', bn: 'গাফির' },
+            { num: 41, ar: 'فُصِّلَت', bn: 'ফুসসিলাত' },
+            { num: 42, ar: 'الشُّورَى', bn: 'শুরা' },
+            { num: 43, ar: 'الزُّخْرُف', bn: 'যুখরুফ' },
+            { num: 44, ar: 'الدُّخَان', bn: 'দুখান' },
+            { num: 45, ar: 'الْجَاثِيَة', bn: 'জাসিয়াহ' },
+            { num: 46, ar: 'الْأَحْقَاف', bn: 'আহকাফ' },
+            { num: 47, ar: 'مُحَمَّد', bn: 'মুহাম্মদ' },
+            { num: 48, ar: 'الْفَتْح', bn: 'ফাতহ' },
+            { num: 49, ar: 'الْحُجُرَات', bn: 'হুজুরাত' },
+            { num: 50, ar: 'ق', bn: 'ক্বাফ' },
+            { num: 51, ar: 'الذَّارِيَات', bn: 'যারিয়াত' },
+            { num: 52, ar: 'الطُّور', bn: 'তূর' },
+            { num: 53, ar: 'النَّجْم', bn: 'নাজম' },
+            { num: 54, ar: 'الْقَمَر', bn: 'কামার' },
+            { num: 55, ar: 'الرَّحْمَٰن', bn: 'রহমান' },
+            { num: 56, ar: 'الْوَاقِعَة', bn: 'ওয়াকিয়াহ' },
+            { num: 57, ar: 'الْحَدِيد', bn: 'হাদিদ' },
+            { num: 58, ar: 'الْمُجَادِلَة', bn: 'মুজাদিলা' },
+            { num: 59, ar: 'الْحَشْر', bn: 'হাশর' },
+            { num: 60, ar: 'الْمُمْتَحِنَة', bn: 'মুমতাহিনা' },
+            { num: 61, ar: 'الصَّفّ', bn: 'সাফ' },
+            { num: 62, ar: 'الْجُمُعَة', bn: 'জুমুআ' },
+            { num: 63, ar: 'الْمُنَافِقُونَ', bn: 'মুনাফিকুন' },
+            { num: 64, ar: 'التَّغَابُن', bn: 'তাগাবুন' },
+            { num: 65, ar: 'الطَّلَاق', bn: 'তালাক' },
+            { num: 66, ar: 'التَّحْرِيم', bn: 'তাহরিম' },
+            { num: 67, ar: 'الْمُلْك', bn: 'মুলক' },
+            { num: 68, ar: 'الْقَلَم', bn: 'কালাম' },
+            { num: 69, ar: 'الْحَاقَّة', bn: 'হাক্কাহ' },
+            { num: 70, ar: 'الْمَعَارِج', bn: 'মাআরিজ' },
+            { num: 71, ar: 'نُوح', bn: 'নূহ' },
+            { num: 72, ar: 'الْجِنّ', bn: 'জিন' },
+            { num: 73, ar: 'الْمُزَّمِّل', bn: 'মুযাম্মিল' },
+            { num: 74, ar: 'الْمُدَّثِّر', bn: 'মুদ্দাস্সির' },
+            { num: 75, ar: 'الْقِيَامَة', bn: 'কিয়ামাহ' },
+            { num: 76, ar: 'الْإِنْسَان', bn: 'ইনসান' },
+            { num: 77, ar: 'الْمُرْسَلَات', bn: 'মুরসালাত' },
+            { num: 78, ar: 'النَّبَأ', bn: 'নাবা' },
+            { num: 79, ar: 'النَّازِعَات', bn: 'নাযিয়াত' },
+            { num: 80, ar: 'عَبَسَ', bn: 'আবাসা' },
+            { num: 81, ar: 'التَّكْوِير', bn: 'তাকভির' },
+            { num: 82, ar: 'الْإِنْفِطَار', bn: 'ইনফিতার' },
+            { num: 83, ar: 'الْمُطَفِّفِينَ', bn: 'মুতাফ্ফিফিন' },
+            { num: 84, ar: 'الْإِنْشِقَاق', bn: 'ইনশিকাক' },
+            { num: 85, ar: 'الْبُرُوج', bn: 'বুরুজ' },
+            { num: 86, ar: 'الطَّارِق', bn: 'তারিক' },
+            { num: 87, ar: 'الْأَعْلَى', bn: 'আলা' },
+            { num: 88, ar: 'الْغَاشِيَة', bn: 'গাশিয়াহ' },
+            { num: 89, ar: 'الْفَجْر', bn: 'ফজর' },
+            { num: 90, ar: 'الْبَلَد', bn: 'বালাদ' },
+            { num: 91, ar: 'الشَّمْس', bn: 'শামস' },
+            { num: 92, ar: 'اللَّيْل', bn: 
+'লাইল' },
+            { num: 93, ar: 'الضُّحَى', bn: 'দুহা' },
+            { num: 94, ar: 'الشَّرْح', bn: 'শারহ' },
+            { num: 95, ar: 'التِّين', bn: 'তিন' },
+            { num: 96, ar: 'الْعَلَق', bn: 'আলাক' },
+            { num: 97, ar: 'الْقَدْر', bn: 'কদর' },
+            { num: 98, ar: 'الْبَيِّنَة', bn: 'বাইয়িনাহ' },
+            { num: 99, ar: 'الزَّلْزَلَة', bn: 'যিলযাল' },
+            { num: 100, ar: 'الْعَادِيَات', bn: 'আদিয়াত' },
+            { num: 101, ar: 'الْقَارِعَة', bn: 'কারিয়াহ' },
+            { num: 102, ar: 'التَّكَاثُر', bn: 'তাকাসুর' },
+            { num: 103, ar: 'الْعَصْر', bn: 'আসর' },
+            { num: 104, ar: 'الْهُمَزَة', bn: 'হুমাযাহ' },
+            { num: 105, ar: 'الْفِيل', bn: 'ফিল' },
+            { num: 106, ar: 'قُرَيْش', bn: 'কুরাইশ' },
+            { num: 107, ar: 'الْمَاعُون', bn: 'মাউন' },
+            { num: 108, ar: 'الْكَوْثَر', bn: 'কাওসার' },
+            { num: 109, ar: 'الْكَافِرُونَ', bn: 'কাফিরুন' },
+            { num: 110, ar: 'النَّصْر', bn: 'নাসর' },
+            { num: 111, ar: 'الْمَسَد', bn: 'মাসাদ' },
+            { num: 112, ar: 'الْإِخْلَاص', bn: 'ইখলাস' },
+            { num: 113, ar: 'الْفَلَق', bn: 'ফালাক' },
+            { num: 114, ar: 'النَّاس', bn: 'নাস' }
+        ];
 
         // ================================================================
-        // ডেভেলপার তথ্য
+        // API কনফিগারেশন
+        // ================================================================
+        var QURAN_API = 'https://api.alquran.cloud/v1';
+        var HADITH_CDN = 'https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions';
+
+        var HADITH_EDITIONS = {
+            bukhari: 'eng-bukhari',
+            muslim: 'eng-muslim',
+            tirmidhi: 'eng-tirmidhi',
+            abudawud: 'eng-abudawud'
+        };
+
+        var currentTab = 'quran';
+        var currentPage = 1;
+        var itemsPerPage = 10;
+        var currentResults = [];
+        var viewMode = 'grid'; // 'grid' or 'surah'
+
+        // ================================================================
+        // ডম এলিমেন্ট
+        // ================================================================
+        var searchInput = document.getElementById('searchInput');
+        var searchBtn = document.getElementById('searchBtn');
+        var resultContainer = document.getElementById('resultContainer');
+        var loading = document.getElementById('loading');
+        var noResult = document.getElementById('noResult');
+        var pagination = document.getElementById('pagination');
+        var tabs = document.querySelectorAll('.tab-btn');
+
+        // ================================================================
+        // ট্যাব স্যুইচ
+        // ================================================================
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                tabs.forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+                currentTab = this.getAttribute('data-tab');
+                viewMode = 'grid';
+                currentPage = 1;
+                resultContainer.innerHTML = '';
+                noResult.classList.remove('show');
+                pagination.innerHTML = '';
+
+                if (currentTab === 'quran') {
+                    showSurahGrid();
+                } else {
+                    searchInput.value = '';
+                    loadHadithCollection(currentTab);
+                }
+            });
+        });
+
+        // ================================================================
+        // 🏠 সূরা গ্রিড দেখানো
+        // ================================================================
+        function showSurahGrid() {
+            var html = '<div class="surah-grid">';
+            for (var i = 0; i < SURAH_NAMES.length; i++) {
+                var s = SURAH_NAMES[i];
+                html += '<button class="surah-btn" data-surah="' + s.num + '">';
+                html += '<span class="ar">' + s.ar + '</span>';
+                html += '<span class="bn">' + s.num + '. ' + s.bn + '</span>';
+                html += '</button>';
+            }
+            html += '</div>';
+            resultContainer.innerHTML = html;
+            noResult.classList.remove('show');
+            pagination.innerHTML = '';
+
+            // বাটনে ক্লিক
+            document.querySelectorAll('.surah-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var surahNum = parseInt(this.getAttribute('data-surah'));
+                    loadSurah(surahNum);
+                });
+            });
+        }
+
+        // ================================================================
+        // 📖 সূরা লোড
+        // ================================================================
+        function loadSurah(surahNum) {
+            showLoading();
+            viewMode = 'surah';
+
+            var url = QURAN_API + '/surah/' + surahNum + '/bn.bengali';
+            var urlAr = QURAN_API + '/surah/' + surahNum + '/quran-uthmani';
+
+            Promise.all([
+                fetch(url).then(function(r) { return r.json(); }),
+                fetch(urlAr).then(function(r) { return r.json(); })
+            ])
+            .then(function(results) {
+                hideLoading();
+                var dataBn = results[0];
+                var dataAr = results[1];
+
+                if (dataBn.code !== 200 || dataAr.code !== 200) {
+                    showNoResult('সূরাটি লোড করা সম্ভব হয়নি।');
+                    return;
+                }
+
+                var surahBn = dataBn.data;
+                var surahAr = dataAr.data;
+
+                var html = '<button class="back-btn" id="backToGridBtn">⬅️ সূরা তালিকায় ফিরুন</button>';
+                html += '<div class="surah-view">';
+                html += '<div class="surah-name">' + surahAr.name + ' <span class="bn">(' + surahBn.name + ')</span></div>';
+                html += '<div class="surah-info"><span>📖 ' + surahBn.englishName + '</span><span>📜 ' + surahBn.ayahs.length + ' আয়াত</span></div>';
+
+                for (var i = 0; i < surahBn.ayahs.length; i++) {
+                    var ayahBn = surahBn.ayahs[i];
+                    var ayahAr = surahAr.ayahs[i];
+                    html += '<div class="ayah">';
+                    html += '<div class="arabic">' + ayahAr.text + '</div>';
+                    html += '<div class="translation"><span style="color:#888;font-size:12px;">' + ayahBn.numberInSurah + '.</span> ' + ayahBn.text + '</div>';
+                    html += '</div>';
+                }
+
+                html += '</div>';
+                resultContainer.innerHTML = html;
+                noResult.classList.remove('show');
+                pagination.innerHTML = '';
+
+                document.getElementById('backToGridBtn').addEventListener('click', function() {
+                    viewMode = 'grid';
+                    showSurahGrid();
+                });
+            })
+            .catch(function(err) {
+                hideLoading();
+                showNoResult('এরর: ' + err.message);
+            });
+        }
+
+        // ================================================================
+        // 📚 হাদিস সংগ্রহ লোড
+        // ================================================================
+        function loadHadithCollection(collection) {
+            var edition = HADITH_EDITIONS[collection];
+            if (!edition) {
+                showNoResult('এই সংগ্রহটি এখনও যোগ করা হয়নি।');
+                return;
+            }
+
+            showLoading();
+            var url = HADITH_CDN + '/' + edition + '.json';
+
+            fetch(url)
+                .then(function(res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .then(function(data) {
+                    hideLoading();
+                    var hadiths = [];
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            var item = data[key];
+                            item._id = key;
+                            hadiths.push(item);
+                        }
+                    }
+                    hadiths.sort(function(a, b) {
+                        return parseInt(a._id) - parseInt(b._id);
+                    });
+                    currentResults = hadiths;
+                    renderHadithResults(hadiths);
+                })
+                .catch(function(err) {
+                    hideLoading();
+                    showNoResult('হাদিস লোড করা সম্ভব হয়নি। আবার চেষ্টা করুন।');
+                    console.error(err);
+                });
+        }
+
+        // ================================================================
+        // 🔍 হাদিস সার্চ
+        // ================================================================
+        function searchHadith(query, collection) {
+            var edition = HADITH_EDITIONS[collection];
+            if (!edition) {
+                showNoResult('এই সংগ্রহটি এখনও যোগ করা হয়নি।');
+                return;
+            }
+
+            showLoading();
+            var url = HADITH_CDN + '/' + edition + '.json';
+
+            fetch(url)
+                .then(function(res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .then(function(data) {
+                    hideLoading();
+                    var results = [];
+                    var lowerQuery = query.toLowerCase();
+
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            var item = data[key];
+                            var text = (item.text || '').toLowerCase();
+                            var title = (item.title || '').toLowerCase();
+                            if (text.includes(lowerQuery) || title.includes(lowerQuery)) {
+                                item._id = key;
+                                results.push(item);
+                            }
+                        }
+                    }
+
+                    if (results.length === 0) {
+                        showNoResult('"' + query + '" সম্পর্কে কোনো হাদিস পাওয়া যায়নি।');
+                        return;
+                    }
+
+                    currentResults = results;
+                    renderHadithResults(results);
+                })
+                .catch(function(err) {
+                    hideLoading();
+                    showNoResult('সার্চ করা সম্ভব হয়নি। আবার চেষ্টা করুন।');
+                    console.error(err);
+                });
+        }
+
+        // ================================================================
+        // 📋 হাদিস রেন্ডার
+        // ================================================================
+        function renderHadithResults(results) {
+            var totalPages = Math.ceil(results.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = 1;
+
+            var start = (currentPage - 1) * itemsPerPage;
+            var end = Math.min(start + itemsPerPage, results.length);
+            var pageItems = results.slice(start, end);
+
+            var html = '';
+            for (var i = 0; i < pageItems.length; i++) {
+                var item = pageItems[i];
+                var hadithText = item.text || '';
+                var hadithTitle = item.title || '';
+                var arabic = item.arabic || '';
+                var ref = item.refno || '';
+
+                html += '<div class="hadith-card">';
+                if (hadithTitle) {
+                    html += '<div class="h-narrator">📜 ' + hadithTitle + '</div>';
+                }
+                if (arabic) {
+                    html += '<div class="h-arabic">' + arabic + '</div>';
+                }
+                html += '<div class="h-text">' + hadithText + '</div>';
+                if (ref) {
+                    html += '<div class="h-ref">📌 ' + ref + '</div>';
+                }
+                html += '</div>';
+            }
+
+            resultContainer.innerHTML = html;
+            noResult.classList.remove('show');
+            renderPagination(totalPages);
+        }
+
+        // ================================================================
+        // 📄 পেজিনেশন
+        // ================================================================
+        function renderPagination(totalPages) {
+            pagination.innerHTML = '';
+            if (totalPages <= 1) return;
+
+            for (var i = 1; i <= Math.min(totalPages, 20); i++) {
+                var btn = document.createElement('button');
+                btn.textContent = i;
+                if (i === currentPage) btn.classList.add('active');
+                btn.addEventListener('click', function() {
+                    currentPage = parseInt(this.textContent);
+                    renderHadithResults(currentResults);
+                });
+                pagination.appendChild(btn);
+            }
+        }
+
+        // ================================================================
+        // UI হেল্পার
+        // ================================================================
+        function showLoading() {
+            loading.classList.add('show');
+            resultContainer.innerHTML = '';
+            noResult.classList.remove('show');
+            pagination.innerHTML = '';
+        }
+
+        function hideLoading() {
+            loading.classList.remove('show');
+        }
+
+        function showNoResult(msg) {
+            hideLoading();
+            resultContainer.innerHTML = '';
+            noResult.classList.add('show');
+            noResult.querySelector('p').textContent = msg || 'কোনো ফলাফল পাওয়া যায়নি।';
+            pagination.innerHTML = '';
+        }
+
+        // ================================================================
+        // 🔍 সার্চ হ্যান্ডলার
+        // ================================================================
+        function performSearch() {
+            var query = searchInput.value.trim().toLowerCase();
+            if (!query) {
+                if (currentTab === 'quran') {
+                    showSurahGrid();
+                } else {
+                    loadHadithCollection(currentTab);
+                }
+                return;
+            }
+
+            if (currentTab === 'quran') {
+                // সূরা নাম দিয়ে খোঁজ
+                var found = null;
+                for (var i = 0; i < SURAH_NAMES.length; i++) {
+                    var s = SURAH_NAMES[i];
+                    if (s.bn.toLowerCase() === query || s.bn.toLowerCase().includes(query) || s.ar.includes(query)) {
+                        found = s;
+                        break;
+                    }
+                }
+                if (found) {
+                    loadSurah(found.num);
+                } else {
+                    showNoResult('"' + query + '" নামে কোনো সূরা পাওয়া যায়নি।');
+                }
+            } else {
+                searchHadith(query, currentTab);
+            }
+        }
+
+        // ================================================================
+        // ইভেন্ট
+        // ================================================================
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        // ================================================================
+        // ডিফল্ট লোড
+        // ================================================================
+        window.onload = function() {
+            showSurahGrid();
+        };
+
+        // ================================================================
+        // ডেভেলপার
         // ================================================================
         var DEV_INFO = {
             name: 'আপনার নাম',
@@ -399,64 +972,6 @@
             phoneDisplay: '+৮৮০ ১৭০০-XXXXXXX'
         };
 
-        // ================================================================
-        // ডম এলিমেন্ট
-        // ================================================================
-        var searchInput = document.getElementById('searchInput');
-        var searchBtn = document.getElementById('searchBtn');
-        var resultsDiv = document.getElementById('resultsContainer');
-        var viewerIframe = document.getElementById('viewerIframe');
-        var viewerPlaceholder = document.getElementById('viewerPlaceholder');
-        var viewerHeader = document.getElementById('viewerHeader');
-        var currentUrlDisplay = document.getElementById('currentUrlDisplay');
-        var closeViewerBtn = document.getElementById('closeViewerBtn');
-        var errorBox = document.getElementById('errorBox');
-        var errorMsg = document.getElementById('errorMsg');
-        var openNewTabBtn = document.getElementById('openNewTabBtn');
-        var errorCloseBtn = document.getElementById('errorCloseBtn');
-        var tabs = document.querySelectorAll('.tab');
-        var devBtn = document.getElementById('devInfoBtn');
-        var devModal = document.getElementById('devModal');
-        var devModalClose = document.getElementById('devModalClose');
-        var bannerImage = document.getElementById('bannerImage');
-        var devPhoto = document.getElementById('devPhoto');
-        var noPhotoPlaceholder = document.getElementById('noPhotoPlaceholder');
-        var currentTab = 'web';
-        var currentUrl = '';
-
-        // ================================================================
-        // ব্যানার লোড
-        // ================================================================
-        function loadBanner() {
-            bannerImage.src = BANNER_PATH;
-            bannerImage.onload = function() {
-                bannerImage.style.display = 'block';
-            };
-            bannerImage.onerror = function() {
-                bannerImage.style.display = 'none';
-            };
-        }
-        loadBanner();
-
-        // ================================================================
-        // প্রোফাইল ফটো লোড
-        // ================================================================
-        function loadProfilePhoto() {
-            devPhoto.src = PROFILE_PATH;
-            devPhoto.onload = function() {
-                devPhoto.style.display = 'block';
-                noPhotoPlaceholder.style.display = 'none';
-            };
-            devPhoto.onerror = function() {
-                devPhoto.style.display = 'none';
-                noPhotoPlaceholder.style.display = 'block';
-            };
-        }
-        loadProfilePhoto();
-
-        // ================================================================
-        // ডেভেলপার তথ্য সেট
-        // ================================================================
         document.getElementById('devName').textContent = DEV_INFO.name;
         document.getElementById('devRole').textContent = DEV_INFO.role;
         document.getElementById('devWhatsApp').href = DEV_INFO.whatsapp;
@@ -464,132 +979,11 @@
         document.getElementById('devPhone').href = DEV_INFO.phone;
         document.getElementById('devPhone').textContent = '📞 ' + DEV_INFO.phoneDisplay;
 
-        // ================================================================
-        // ভিউয়ার কন্ট্রোল
-        // ================================================================
-        function showError(message, url) {
-            errorBox.style.display = 'flex';
-            viewerIframe.style.display = 'none';
-            viewerPlaceholder.style.display = 'none';
-            viewerHeader.style.display = 'flex';
-            currentUrlDisplay.textContent = url || 'লোড করা সম্ভব নয়';
-            errorMsg.textContent = message || 'এই ওয়েবসাইটটি iframe-এ লোড হতে বাধা দেয়।';
-            currentUrl = url;
-        }
+        var devBtn = document.getElementById('devBtn');
+        var devModal = document.getElementById('devModal');
+        var devModalClose = document.getElementById('devModalClose');
 
-        function hideError() {
-            errorBox.style.display = 'none';
-        }
-
-        function loadUrlInViewer(url, title) {
-            if (!url || url === '#' || url === '') {
-                return;
-            }
-            
-            // ভিডিও ডিটেক্ট
-            var videoId = null;
-            if (url.includes('youtube.com/watch?v=')) {
-                try {
-                    var urlParams = new URLSearchParams(new URL(url).search);
-                    videoId = urlParams.get('v');
-                } catch(e) {}
-            } else if (url.includes('youtu.be/')) {
-                try {
-                    var parts = url.split('/');
-                    videoId = parts[parts.length - 1].split('?')[0];
-                } catch(e) {}
-            }
-
-            // ভিডিও হলে প্লেয়ার দেখাই
-            if (videoId) {
-                hideError();
-                viewerIframe.style.display = 'block';
-                viewerPlaceholder.style.display = 'none';
-                viewerHeader.style.display = 'flex';
-                currentUrlDisplay.textContent = '▶️ ' + (title || 'ভিডিও');
-                viewerIframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
-                return;
-            }
-
-            // সাধারণ ওয়েবসাইট
-            try {
-                var finalUrl = url;
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    finalUrl = 'https://' + url;
-                }
-                
-                // iframe-এ লোড করার চেষ্টা
-                hideError();
-                viewerIframe.style.display = 'block';
-                viewerPlaceholder.style.display = 'none';
-                viewerHeader.style.display = 'flex';
-                currentUrlDisplay.textContent = finalUrl;
-                viewerIframe.src = finalUrl;
-                
-                // যদি iframe লোড না হয় (এরর দেখায়)
-                viewerIframe.onerror = function() {
-                    showError('এই ওয়েবসাইটটি iframe-এ লোড হতে বাধা দেয়।', finalUrl);
-                };
-                
-                // 5 সেকেন্ড পর চেক করি (যদি লোড না হয়)
-                setTimeout(function() {
-                    try {
-                        // iframe-এর কন্টেন্ট চেক করা যায় না (CORS কারণে)
-                        // তাই আমরা ধরে নিই সঠিকভাবে লোড হয়েছে
-                    } catch(e) {
-                        showError('এই ওয়েবসাইটটি লোড করা সম্ভব নয়।', finalUrl);
-                    }
-                }, 3000);
-                
-            } catch(e) {
-                showError('এই লিংকটি লোড করা সম্ভব নয়: ' + e.message, url);
-            }
-        }
-
-        function closeViewer() {
-            viewerIframe.style.display = 'none';
-            viewerPlaceholder.style.display = 'flex';
-            viewerHeader.style.display = 'none';
-            viewerIframe.src = '';
-            hideError();
-        }
-
-        // ================================================================
-        // ভিউয়ার ইভেন্ট
-        // ================================================================
-        closeViewerBtn.addEventListener('click', closeViewer);
-
-        openNewTabBtn.addEventListener('click', function() {
-            if (currentUrl) {
-                window.open(currentUrl, '_blank');
-            }
-        });
-
-        errorCloseBtn.addEventListener('click', closeViewer);
-
-        // ================================================================
-        // ট্যাব স্যুইচ
-        // ================================================================
-        for (var i = 0; i < tabs.length; i++) {
-            tabs[i].addEventListener('click', function() {
-                for (var j = 0; j < tabs.length; j++) {
-                    tabs[j].classList.remove('active');
-                }
-                this.classList.add('active');
-                currentTab = this.getAttribute('data-tab');
-                resultsDiv.innerHTML = '';
-                closeViewer();
-                if (searchInput.value.trim()) {
-                    performSearch();
-                }
-            });
-        }
-
-        // ================================================================
-        // ডেভেলপার মোডাল
-        // ================================================================
         devBtn.addEventListener('click', function() {
-            loadProfilePhoto();
             devModal.classList.add('show');
         });
         devModalClose.addEventListener('click', function() {
@@ -600,139 +994,6 @@
                 devModal.classList.remove('show');
             }
         });
-
-        // ================================================================
-        // সার্চ ফাংশন (DuckDuckGo)
-        // ================================================================
-        function performSearch() {
-            var query = searchInput.value.trim();
-            if (!query) {
-                resultsDiv.innerHTML = '<div class="no-result">⚠️ দয়া করে কিছু লিখুন</div>';
-                return;
-            }
-
-            resultsDiv.innerHTML = '<div class="loading">⏳ লোড হচ্ছে...</div>';
-            closeViewer();
-
-            var url = 'https://api.duckduckgo.com/?q=' + encodeURIComponent(query) + '&format=json&no_html=1&skip_disambig=1';
-            fetch(url)
-                .then(function(res) {
-                    if (!res.ok) {
-                        throw new Error('HTTP ' + res.status);
-                    }
-                    return res.json();
-                })
-                .then(function(data) {
-                    var results = [];
-                    if (data.RelatedTopics && data.RelatedTopics.length > 0) {
-                        for (var i = 0; i < data.RelatedTopics.length; i++) {
-                            var item = data.RelatedTopics[i];
-                            if (item.Text && item.FirstURL) {
-                                var title = item.Text;
-                                var snippet = '';
-                                if (item.Text.includes(' - ')) {
-                                    var parts = item.Text.split(' - ');
-                                    title = parts[0];
-                                    snippet = parts.slice(1).join(' - ');
-                                }
-                                results.push({
-                                    title: title || item.Text,
-                                    url: item.FirstURL || '#',
-                                    content: snippet || item.Text,
-                                    icon: '🌐'
-                                });
-                            }
-                        }
-                    }
-                    if (data.AbstractText) {
-                        results.unshift({
-                            title: data.Heading || data.Abstract || 'উত্তর',
-                            url: data.AbstractURL || '#',
-                            content: data.AbstractText,
-                            icon: '📄'
-                        });
-                    }
-                    if (results.length === 0) {
-                        resultsDiv.innerHTML = '<div class="no-result">😕 কোনো রেজাল্ট পাওয়া যায়নি</div>';
-                        return;
-                    }
-
-                    // ভিডিও ট্যাব হলে YouTube লিংক ফিল্টার
-                    if (currentTab === 'video') {
-                        var videoResults = [];
-                        for (var i = 0; i < results.length; i++) {
-                            var item = results[i];
-                            if (item.url && (item.url.includes('youtube.com') || item.url.includes('youtu.be') || item.url.includes('vimeo.com'))) {
-                                videoResults.push(item);
-                            }
-                        }
-                        if (videoResults.length === 0) {
-                            resultsDiv.innerHTML = '<div class="no-result">😕 কোনো ভিডিও পাওয়া যায়নি</div>';
-                            return;
-                        }
-                        renderResults(videoResults);
-                    } else {
-                        renderResults(results);
-                    }
-                })
-                .catch(function(err) {
-                    console.error('সার্চ এরর:', err);
-                    resultsDiv.innerHTML = '<div class="no-result">❌ সার্চ ইঞ্জিন সাড়া দিচ্ছে না। <button onclick="performSearch()" style="background:#3b82f6;color:white;border:none;padding:4px 14px;border-radius:30px;cursor:pointer;">আবার চেষ্টা</button></div>';
-                });
-        }
-
-        // ================================================================
-        // রেজাল্ট রেন্ডার
-        // ================================================================
-        function renderResults(results) {
-            resultsDiv.innerHTML = '';
-            var maxResults = Math.min(results.length, 20);
-            for (var i = 0; i < maxResults; i++) {
-                var item = results[i];
-                var div = document.createElement('div');
-                div.className = 'result-item';
-                var icon = item.icon || '🌐';
-                div.innerHTML = '<span class="icon">' + icon + '</span>' +
-                    '<div class="info">' +
-                        '<div class="title">' + (item.title || 'শিরোনাম নেই') + '</div>' +
-                        '<div class="url">' + (item.url || '') + '</div>' +
-                    '</div>' +
-                    '<button class="load-btn" data-url="' + item.url + '" data-title="' + item.title + '">▶ ওপেন</button>';
-                var loadBtn = div.querySelector('.load-btn');
-                loadBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    var url = this.getAttribute('data-url');
-                    var title = this.getAttribute('data-title');
-                    loadUrlInViewer(url, title);
-                });
-                div.addEventListener('click', function() {
-                    var url = this.querySelector('.load-btn').getAttribute('data-url');
-                    var title = this.querySelector('.load-btn').getAttribute('data-title');
-                    loadUrlInViewer(url, title);
-                });
-                resultsDiv.appendChild(div);
-            }
-        }
-
-        // ================================================================
-        // ইভেন্ট লিসেনার
-        // ================================================================
-        searchBtn.addEventListener('click', performSearch);
-        searchInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-
-        // ================================================================
-        // ডিফল্ট সার্চ
-        // ================================================================
-        window.onload = function() {
-            setTimeout(function() {
-                searchInput.value = 'Song';
-                performSearch();
-            }, 500);
-        };
     </script>
 
 </body>
