@@ -512,4 +512,228 @@
             }
 
             // সাধারণ ওয়েবসাইট
-            
+            try {
+                var finalUrl = url;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    finalUrl = 'https://' + url;
+                }
+                
+                // iframe-এ লোড করার চেষ্টা
+                hideError();
+                viewerIframe.style.display = 'block';
+                viewerPlaceholder.style.display = 'none';
+                viewerHeader.style.display = 'flex';
+                currentUrlDisplay.textContent = finalUrl;
+                viewerIframe.src = finalUrl;
+                
+                // যদি iframe লোড না হয় (এরর দেখায়)
+                viewerIframe.onerror = function() {
+                    showError('এই ওয়েবসাইটটি iframe-এ লোড হতে বাধা দেয়।', finalUrl);
+                };
+                
+                // 5 সেকেন্ড পর চেক করি (যদি লোড না হয়)
+                setTimeout(function() {
+                    try {
+                        // iframe-এর কন্টেন্ট চেক করা যায় না (CORS কারণে)
+                        // তাই আমরা ধরে নিই সঠিকভাবে লোড হয়েছে
+                    } catch(e) {
+                        showError('এই ওয়েবসাইটটি লোড করা সম্ভব নয়।', finalUrl);
+                    }
+                }, 3000);
+                
+            } catch(e) {
+                showError('এই লিংকটি লোড করা সম্ভব নয়: ' + e.message, url);
+            }
+        }
+
+        function closeViewer() {
+            viewerIframe.style.display = 'none';
+            viewerPlaceholder.style.display = 'flex';
+            viewerHeader.style.display = 'none';
+            viewerIframe.src = '';
+            hideError();
+        }
+
+        // ================================================================
+        // ভিউয়ার ইভেন্ট
+        // ================================================================
+        closeViewerBtn.addEventListener('click', closeViewer);
+
+        openNewTabBtn.addEventListener('click', function() {
+            if (currentUrl) {
+                window.open(currentUrl, '_blank');
+            }
+        });
+
+        errorCloseBtn.addEventListener('click', closeViewer);
+
+        // ================================================================
+        // ট্যাব স্যুইচ
+        // ================================================================
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].addEventListener('click', function() {
+                for (var j = 0; j < tabs.length; j++) {
+                    tabs[j].classList.remove('active');
+                }
+                this.classList.add('active');
+                currentTab = this.getAttribute('data-tab');
+                resultsDiv.innerHTML = '';
+                closeViewer();
+                if (searchInput.value.trim()) {
+                    performSearch();
+                }
+            });
+        }
+
+        // ================================================================
+        // ডেভেলপার মোডাল
+        // ================================================================
+        devBtn.addEventListener('click', function() {
+            loadProfilePhoto();
+            devModal.classList.add('show');
+        });
+        devModalClose.addEventListener('click', function() {
+            devModal.classList.remove('show');
+        });
+        devModal.addEventListener('click', function(e) {
+            if (e.target === devModal) {
+                devModal.classList.remove('show');
+            }
+        });
+
+        // ================================================================
+        // সার্চ ফাংশন (DuckDuckGo)
+        // ================================================================
+        function performSearch() {
+            var query = searchInput.value.trim();
+            if (!query) {
+                resultsDiv.innerHTML = '<div class="no-result">⚠️ দয়া করে কিছু লিখুন</div>';
+                return;
+            }
+
+            resultsDiv.innerHTML = '<div class="loading">⏳ লোড হচ্ছে...</div>';
+            closeViewer();
+
+            var url = 'https://api.duckduckgo.com/?q=' + encodeURIComponent(query) + '&format=json&no_html=1&skip_disambig=1';
+            fetch(url)
+                .then(function(res) {
+                    if (!res.ok) {
+                        throw new Error('HTTP ' + res.status);
+                    }
+                    return res.json();
+                })
+                .then(function(data) {
+                    var results = [];
+                    if (data.RelatedTopics && data.RelatedTopics.length > 0) {
+                        for (var i = 0; i < data.RelatedTopics.length; i++) {
+                            var item = data.RelatedTopics[i];
+                            if (item.Text && item.FirstURL) {
+                                var title = item.Text;
+                                var snippet = '';
+                                if (item.Text.includes(' - ')) {
+                                    var parts = item.Text.split(' - ');
+                                    title = parts[0];
+                                    snippet = parts.slice(1).join(' - ');
+                                }
+                                results.push({
+                                    title: title || item.Text,
+                                    url: item.FirstURL || '#',
+                                    content: snippet || item.Text,
+                                    icon: '🌐'
+                                });
+                            }
+                        }
+                    }
+                    if (data.AbstractText) {
+                        results.unshift({
+                            title: data.Heading || data.Abstract || 'উত্তর',
+                            url: data.AbstractURL || '#',
+                            content: data.AbstractText,
+                            icon: '📄'
+                        });
+                    }
+                    if (results.length === 0) {
+                        resultsDiv.innerHTML = '<div class="no-result">😕 কোনো রেজাল্ট পাওয়া যায়নি</div>';
+                        return;
+                    }
+
+                    // ভিডিও ট্যাব হলে YouTube লিংক ফিল্টার
+                    if (currentTab === 'video') {
+                        var videoResults = [];
+                        for (var i = 0; i < results.length; i++) {
+                            var item = results[i];
+                            if (item.url && (item.url.includes('youtube.com') || item.url.includes('youtu.be') || item.url.includes('vimeo.com'))) {
+                                videoResults.push(item);
+                            }
+                        }
+                        if (videoResults.length === 0) {
+                            resultsDiv.innerHTML = '<div class="no-result">😕 কোনো ভিডিও পাওয়া যায়নি</div>';
+                            return;
+                        }
+                        renderResults(videoResults);
+                    } else {
+                        renderResults(results);
+                    }
+                })
+                .catch(function(err) {
+                    console.error('সার্চ এরর:', err);
+                    resultsDiv.innerHTML = '<div class="no-result">❌ সার্চ ইঞ্জিন সাড়া দিচ্ছে না। <button onclick="performSearch()" style="background:#3b82f6;color:white;border:none;padding:4px 14px;border-radius:30px;cursor:pointer;">আবার চেষ্টা</button></div>';
+                });
+        }
+
+        // ================================================================
+        // রেজাল্ট রেন্ডার
+        // ================================================================
+        function renderResults(results) {
+            resultsDiv.innerHTML = '';
+            var maxResults = Math.min(results.length, 20);
+            for (var i = 0; i < maxResults; i++) {
+                var item = results[i];
+                var div = document.createElement('div');
+                div.className = 'result-item';
+                var icon = item.icon || '🌐';
+                div.innerHTML = '<span class="icon">' + icon + '</span>' +
+                    '<div class="info">' +
+                        '<div class="title">' + (item.title || 'শিরোনাম নেই') + '</div>' +
+                        '<div class="url">' + (item.url || '') + '</div>' +
+                    '</div>' +
+                    '<button class="load-btn" data-url="' + item.url + '" data-title="' + item.title + '">▶ ওপেন</button>';
+                var loadBtn = div.querySelector('.load-btn');
+                loadBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var url = this.getAttribute('data-url');
+                    var title = this.getAttribute('data-title');
+                    loadUrlInViewer(url, title);
+                });
+                div.addEventListener('click', function() {
+                    var url = this.querySelector('.load-btn').getAttribute('data-url');
+                    var title = this.querySelector('.load-btn').getAttribute('data-title');
+                    loadUrlInViewer(url, title);
+                });
+                resultsDiv.appendChild(div);
+            }
+        }
+
+        // ================================================================
+        // ইভেন্ট লিসেনার
+        // ================================================================
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // ================================================================
+        // ডিফল্ট সার্চ
+        // ================================================================
+        window.onload = function() {
+            setTimeout(function() {
+                searchInput.value = 'Song';
+                performSearch();
+            }, 500);
+        };
+    </script>
+
+</body>
+</html>
