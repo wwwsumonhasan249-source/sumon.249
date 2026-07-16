@@ -201,7 +201,6 @@
         }
         .back-btn:hover { background: rgba(46,204,113,0.15); color: #2ecc71; }
 
-        /* ===== হাদিস কার্ড ===== */
         .hadith-card {
             padding: 14px 16px;
             background: rgba(255,255,255,0.03);
@@ -229,15 +228,6 @@
             color: #666;
             margin-top: 4px;
         }
-        .hadith-card .h-arabic {
-            font-size: 16px;
-            font-family: 'Amiri', 'Traditional Arabic', serif;
-            direction: rtl;
-            text-align: right;
-            color: #fff;
-            margin-bottom: 4px;
-            line-height: 1.6;
-        }
 
         .pagination {
             display: flex;
@@ -259,7 +249,7 @@
         .pagination button:hover { background: rgba(46,204,113,0.15); color: #2ecc71; }
         .pagination button.active { background: #2ecc71; color: #000; border-color: #2ecc71; }
 
-        /* ===== ডেভেলপার ===== */
+        /* ===== ডেভেলপার বাটন ===== */
         .dev-btn {
             width: 40px;
             height: 40px;
@@ -280,6 +270,7 @@
         }
         .dev-btn:hover { background: rgba(46,204,113,0.25); }
 
+        /* ===== ডেভেলপার মোডাল ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -312,15 +303,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            color: #888;
-            border: 3px solid #2ecc71;
             overflow: hidden;
+            border: 3px solid #2ecc71;
         }
         .modal-box .avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
         .modal-box h2 { font-size: 20px; margin-bottom: 2px; }
         .modal-box .role { color: #aaa; font-size: 13px; margin-bottom: 14px; }
@@ -397,15 +387,21 @@
 
     </div>
 
+    <!-- ===== ডেভেলপার বাটন ===== -->
     <button class="dev-btn" id="devBtn">👤</button>
+
+    <!-- ===== ডেভেলপার মোডাল ===== -->
     <div class="modal-overlay" id="devModal">
         <div class="modal-box">
-            <div class="avatar" id="devAvatarContainer">
-                <img id="devPhoto" style="display:none;" alt="প্রোফাইল" />
-                <span class="no-photo" id="devPlaceholder">👤</span>
+            <div class="avatar">
+                <!-- 
+                    📌 ফটোর নাম: profile.png
+                    এই ফাইলটি index.html-এর পাশে রাখুন
+                -->
+                <img id="devPhoto" src="profile.png" alt="ডেভেলপার" />
             </div>
-            <h2 id="devName">sumon hasan</h2>
-            <p class="role" id="devRole">🛠️ web and apps developer</p>
+            <h2 id="devName">আপনার নাম</h2>
+            <p class="role" id="devRole">🛠️ ওয়েব ডেভেলপার</p>
             <a id="devWhatsApp" href="#" target="_blank" class="contact-item">💬 হোয়াটসঅ্যাপে মেসেজ</a>
             <a id="devEmail" href="#" class="contact-item">📧 ইমেইল পাঠান</a>
             <a id="devPhone" href="#" class="contact-item">📞 কল করুন</a>
@@ -526,10 +522,10 @@
             { num: 106, ar: 'قُرَيْش', bn: 'কুরাইশ' },
             { num: 107, ar: 'الْمَاعُون', bn: 'মাউন' },
             { num: 108, ar: 'الْكَوْثَر', bn: 'কাওসার' },
-         { num: 109, ar: 'الْكَافِرُونَ', bn: 'কাফিরুন' },
+            { num: 109, ar: 'الْكَافِرُونَ', bn: 'কাফিরুন' },
             { num: 110, ar: 'النَّصْر', bn: 'নাসর' },
             { num: 111, ar: 'الْمَسَد', bn: 'মাসাদ' },
-            { num: 112, ar: 'الْإِخْلَاص', bn: 'ইখলাস' },
+             { num: 112, ar: 'الْإِخْلَاص', bn: 'ইখলাস' },
             { num: 113, ar: 'الْفَلَق', bn: 'ফালাক' },
             { num: 114, ar: 'النَّاس', bn: 'নাস' }
         ];
@@ -594,6 +590,35 @@
         var noResult = document.getElementById('noResult');
         var pagination = document.getElementById('pagination');
         var tabs = document.querySelectorAll('.tab-btn');
+
+        // ================================================================
+        // ডেভেলপার মোডাল কন্ট্রোল
+        // ================================================================
+        var devBtn = document.getElementById('devBtn');
+        var devModal = document.getElementById('devModal');
+        var devModalClose = document.getElementById('devModalClose');
+
+        devBtn.addEventListener('click', function() {
+            devModal.classList.add('show');
+        });
+        devModalClose.addEventListener('click', function() {
+            devModal.classList.remove('show');
+        });
+        devModal.addEventListener('click', function(e) {
+            if (e.target === devModal) {
+                devModal.classList.remove('show');
+            }
+        });
+
+        // ================================================================
+        // ডেভেলপার তথ্য
+        // ================================================================
+        document.getElementById('devName').textContent = 'আপনার নাম';
+        document.getElementById('devRole').textContent = '🛠️ ওয়েব ডেভেলপার';
+        document.getElementById('devWhatsApp').href = 'https://wa.me/88017XXXXXXXX';
+        document.getElementById('devEmail').href = 'mailto:yourmail@example.com';
+        document.getElementById('devPhone').href = 'tel:+88017XXXXXXXX';
+        document.getElementById('devPhone').textContent = '📞 +৮৮০ ১৭০০-XXXXXXX';
 
         // ================================================================
         // ট্যাব স্যুইচ
@@ -753,8 +778,7 @@
 
         // ================================================================
         // 📋 হাদিস রেন্ডার
-        // ================================================================
-        function renderHadithResults(results) {
+        // ================================================================function renderHadithResults(results) {
             var totalPages = Math.ceil(results.length / itemsPerPage);
             if (currentPage > totalPages) currentPage = 1;
 
@@ -869,45 +893,6 @@
         window.onload = function() {
             showSurahGrid();
         };
-
-        //================================================================
-        // ডেভেলপার
-        // ================================================================
-        var DEV_INFO = {
-            name: 'md.sumon hasan',
-            role: '🛠️  apps developer',
-            whatsapp: 'https://wa.me/8801960678584',
-            email: 'mailto: sumonhasan249@gmail.com',
-            phone: 'tel:+8801960678584',
-            phoneDisplay: 'সরাসরি যোগাযোগ'
-        };
-
-        document.getElementById('devName').textContent = DEV_INFO.name;
-        document.getElementById('devRole').textContent = DEV_INFO.role;
-        document.getElementById('devWhatsApp').href = DEV_INFO.whatsapp;
-        document.getElementById('devEmail').href = DEV_INFO.email;
-        document.getElementById('devPhone').href = DEV_INFO.phone;
-        document.getElementById('devPhone').textContent = '📞 ' + DEV_INFO.phoneDisplay;
-
-        var devBtn = document.getElementById('devBtn');
-        var devModal = document.getElementById('devModal');
-        var devModalClose = document.getElementById('devModalClose');
-
-        devBtn.addEventListener('click', function() {
-            devModal.classList.add('show');
-        });
-        devModalClose.addEventListener('click', function() {
-            devModal.classList.remove('show');
-        });
-        devModal.addEventListener('click', function(e) {
-            if (e.target === devModal) {
-                devModal.classList.remove('show');
-            }
-        });
-
-        console.log('📖 ইসলামিক কন্টেন্ট প্ল্যাটফর্ম লোড হয়েছে!');
-        console.log('📌 হাদিস দেখতে ট্যাব পরিবর্তন করুন।');
-        console.log('📌 বর্ণনাকারীর নাম দিয়েও সার্চ করতে পারেন।');
     </script>
 
 </body>
