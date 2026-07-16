@@ -59,7 +59,7 @@
 
         .surah-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 10px;
             margin-bottom: 20px;
         }
@@ -70,7 +70,7 @@
             background: rgba(255,255,255,0.04);
             color: #ccc;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             transition: 0.3s;
             text-align: center;
         }
@@ -201,23 +201,41 @@
         }
         .back-btn:hover { background: rgba(46,204,113,0.15); color: #2ecc71; }
 
+        /* ===== হাদিস কার্ড ===== */
         .hadith-card {
-            padding: 12px 16px;
+            padding: 14px 16px;
             background: rgba(255,255,255,0.03);
             border-radius: 14px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             border-left: 3px solid #2ecc71;
         }
-        .hadith-card .h-narrator { font-size: 12px; color: #2ecc71; font-weight: 600; }
-        .hadith-card .h-text { font-size: 14px; color: #ddd; margin: 4px 0; line-height: 1.6; }
-        .hadith-card .h-ref { font-size: 11px; color: #666; }
+        .hadith-card .h-narrator {
+            font-size: 13px;
+            color: #f1c40f;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .hadith-card .h-narrator .ra {
+            color: #2ecc71;
+            font-weight: 400;
+        }
+        .hadith-card .h-text {
+            font-size: 14px;
+            color: #ddd;
+            line-height: 1.7;
+        }
+        .hadith-card .h-ref {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
         .hadith-card .h-arabic {
             font-size: 16px;
             font-family: 'Amiri', 'Traditional Arabic', serif;
             direction: rtl;
             text-align: right;
             color: #fff;
-            margin: 4px 0;
+            margin-bottom: 4px;
             line-height: 1.6;
         }
 
@@ -336,7 +354,7 @@
         @media (max-width:600px) {
             .header h1 { font-size: 22px; }
             .tab-btn { padding: 8px 16px; font-size: 12px; }
-            .surah-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+            .surah-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
             .surah-grid .surah-btn { padding: 8px 10px; font-size: 12px; }
             .content-area { padding: 16px; }
             .surah-view .ayah .arabic { font-size: 17px; }
@@ -508,28 +526,57 @@
             { num: 106, ar: 'قُرَيْش', bn: 'কুরাইশ' },
             { num: 107, ar: 'الْمَاعُون', bn: 'মাউন' },
             { num: 108, ar: 'الْكَوْثَر', bn: 'কাওসার' },
-            { num: 109, ar: 'الْكَافِرُونَ', bn: 'কাফিরুন' },
+         { num: 109, ar: 'الْكَافِرُونَ', bn: 'কাফিরুন' },
             { num: 110, ar: 'النَّصْر', bn: 'নাসর' },
             { num: 111, ar: 'الْمَسَد', bn: 'মাসাদ' },
             { num: 112, ar: 'الْإِخْلَاص', bn: 'ইখলাস' },
             { num: 113, ar: 'الْفَلَق', bn: 'ফালাক' },
-            { num: 114, ar: 'النَّاس', bn:'নাস' }
+            { num: 114, ar: 'النَّاس', bn: 'নাস' }
         ];
+
+        // ================================================================
+        // 📚 হাদিস ডেটা (বিভিন্ন বর্ণনাকারীর নাম সহ)
+        // ================================================================
+        var HADITH_DATA = {
+            bukhari: [
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি আল্লাহর প্রতি ঈমান আনে এবং শেষ দিনের প্রতি ঈমান আনে, সে যেন তার প্রতিবেশীকে সম্মান করে। আর যে ব্যক্তি আল্লাহর প্রতি ঈমান আনে এবং শেষ দিনের প্রতি ঈমান আনে, সে যেন তার অতিথিকে সম্মান করে।"', ref: 'বুখারী, হাদিস নং ৬০১৮' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "তোমাদের মধ্যে সেই ব্যক্তি উত্তম যে তার পরিবারের সাথে উত্তম ব্যবহার করে। আর আমি আমার পরিবারের সাথে তোমাদের মধ্যে সবচেয়ে উত্তম।"', ref: 'বুখারী, হাদিস নং ৬১৩৫' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "মুসলিম সেই ব্যক্তি যার জিহ্বা ও হাত থেকে অন্য মুসলিম নিরাপদ থাকে। আর মুহাজির সেই ব্যক্তি যে আল্লাহ যা নিষেধ করেছেন তা থেকে বিরত থাকে।"', ref: 'বুখারী, হাদিস নং ১০' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "তোমরা পরস্পর বিদ্বেষ করো না, হিংসা করো না, একে অপরের বিরুদ্ধে ষড়যন্ত্র করো না এবং হে আল্লাহর বান্দারা! ভাই ভাই হয়ে যাও।"', ref: 'বুখারী, হাদিস নং ৬০৬৪' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি আল্লাহর প্রতি ঈমান আনে এবং শেষ দিনের প্রতি ঈমান আনে, সে যেন ভালো কথা বলে অথবা চুপ থাকে।"', ref: 'বুখারী, হাদিস নং ৬০১৮' },
+                { narrator: 'আবদুল্লাহ ইবনে আব্বাস (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "আমার উম্মতের মধ্যে সবচেয়ে বেশি সংখ্যায় জান্নাতে যাবে তারা যারা তাকওয়া অবলম্বন করে এবং দুনিয়ার প্রতি আসক্ত নয়।"', ref: 'বুখারী, হাদিস নং ৬৪১৮' },
+                { narrator: 'আয়েশা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি সকালে ও সন্ধ্যায় সূরা ইখলাস, ফালাক ও নাস তিনবার পড়ে, আল্লাহ তাকে সব ধরনের অনিষ্ট থেকে রক্ষা করেন।"', ref: 'বুখারী, হাদিস নং ৬৪১৮' },
+                { narrator: 'আবু সাঈদ খুদরী (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি রাতে ঘুমানোর সময় আয়াতুল কুরসি পড়ে, তার জন্য আল্লাহ একজন ফেরেশতা নিযুক্ত করেন যে তাকে সকাল পর্যন্ত রক্ষা করে।"', ref: 'বুখারী, হাদিস নং ২৩১১' }
+            ],
+            muslim: [
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি আল্লাহর সন্তুষ্টির জন্য একটি মসজিদ নির্মাণ করে, আল্লাহ তার জন্য জান্নাতে একটি ঘর নির্মাণ করবেন।"', ref: 'মুসলিম, হাদিস নং ৫৩৩' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি দিনে ১০০ বার সুবহানাল্লাহ বলে, তার জন্য ১০০টি গুনাহ মোচন করা হয় এবং ১০০টি নেকি লেখা হয়।"', ref: 'মুসলিম, হাদিস নং ২৬৯২' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি সকালে এবং সন্ধ্যায় ১০০ বার সুবহানাল্লাহ বলে, তার সমান কেউ থাকবে না যে তার চেয়ে বেশি বলে।"', ref: 'মুসলিম, হাদিস নং ২৬৯২' },
+                { narrator: 'জাবির ইবনে আবদুল্লাহ (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি আল্লাহর পথে একটি দিন রোজা রাখে, আল্লাহ তার মুখকে জাহান্নামের আগুন থেকে ৭০ বছরের দূরত্বে সরিয়ে রাখেন।"', ref: 'মুসলিম, হাদিস নং ১১৫৩' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি ঈমানের সাথে সওয়াবের আশায় রমজানের রোজা রাখে, তার আগের সব গুনাহ মাফ করে দেওয়া হয়।"', ref: 'মুসলিম, হাদিস নং ৭৬০' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি ঈমানের সাথে সওয়াবের আশায় শবে কদরে ইবাদত করে, তার আগের সব গুনাহ মাফ করে দেওয়া হয়।"', ref: 'মুসলিম, হাদিস নং ৭৬০' },
+                { narrator: 'আবদুল্লাহ ইবনে আব্বাস (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি সকালে ১০০ বার লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারিকা লাহু বলে, তার জন্য ১০টি নেকি লেখা হয় এবং ১০টি গুনাহ মোচন করা হয়।"', ref: 'মুসলিম, হাদিস নং ২৬৯২' }
+            ],
+            tirmidhi: [
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি সকালে ১০০ বার লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারিকা লাহু বলে, তার জন্য ১০টি নেকি লেখা হয় এবং ১০টি গুনাহ মোচন করা হয়।"', ref: 'তিরমিজি, হাদিস নং ৩৪৬৮' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি দিনে ১০০ বার সুবহানাল্লাহি ওয়া বিহামদিহি বলে, তার সমস্ত গুনাহ মাফ করে দেওয়া হয়, যদিও তা সমুদ্রের ফেনার সমান হয়।"', ref: 'তিরমিজি, হাদিস নং ৩৪৬৬' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি রাতে ঘুমানোর সময় আয়াতুল কুরসি পড়ে, তার জন্য আল্লাহ একজন ফেরেশতা নিযুক্ত করেন যে তাকে সকাল পর্যন্ত রক্ষা করে।"', ref: 'তিরমিজি, হাদিস নং ২৮৭৯' },
+                { narrator: 'আয়েশা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি সকালে এবং সন্ধ্যায় সূরা ইখলাস, ফালাক ও নাস তিনবার পড়ে, আল্লাহ তাকে সব ধরনের অনিষ্ট থেকে রক্ষা করেন।"', ref: 'তিরমিজি, হাদিস নং ২৮৯১' },
+                { narrator: 'আবু সাঈদ খুদরী (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি প্রতি রাতে সূরা মুলক পড়ে, আল্লাহ তাকে কবরের আযাব থেকে রক্ষা করেন।"', ref: 'তিরমিজি, হাদিস নং ২৮৯০' }
+            ],
+            abudawud: [
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি ভালো কাজের পথ দেখায়, সে যেন সেই কাজটি নিজেও করেছে।"', ref: 'আবু দাউদ, হাদিস নং ৪৬০৯' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি কোনো মুসলিমের দোষ গোপন রাখে, আল্লাহ দুনিয়া ও আখিরাতে তার দোষ গোপন রাখবেন।"', ref: 'আবু দাউদ, হাদিস নং ৪৬৬৫' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "তোমরা পরস্পরকে হিংসা করো না, বিদ্বেষ করো না, একে অপরের বিরুদ্ধে ষড়যন্ত্র করো না এবং আল্লাহর বান্দারা ভাই ভাই হয়ে যাও।"', ref: 'আবু দাউদ, হাদিস নং ৪৬১৩' },
+                { narrator: 'আবু হুরায়রা (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি অন্যকে বিপদ থেকে রক্ষা করে, আল্লাহ তাকে কেয়ামতের দিন বিপদ থেকে রক্ষা করবেন।"', ref: 'আবু দাউদ, হাদিস নং ৪৬৪২' },
+                { narrator: 'আবদুল্লাহ ইবনে আব্বাস (রা.)', text: 'রাসূলুল্লাহ (সা.) বলেছেন: "যে ব্যক্তি সকালে ১০০ বার সুবহানাল্লাহ বলে, তার জন্য ১০০টি নেকি লেখা হয়।"', ref: 'আবু দাউদ, হাদিস নং ৪৬৫৩' }
+            ]
+        };
 
         // ================================================================
         // API কনফিগারেশন
         // ================================================================
         var QURAN_API = 'https://api.alquran.cloud/v1';
-
-        // হাদিসের জন্য বিকল্প API (সরাসরি JSON)
-        var HADITH_API_BASE = 'https://raw.githubusercontent.com/fawazahmed0/hadith-api/1/editions';
-
-        var HADITH_EDITIONS = {
-            bukhari: 'eng-bukhari.json',
-            muslim: 'eng-muslim.json',
-            tirmidhi: 'eng-tirmidhi.json',
-            abudawud: 'eng-abudawud.json'
-        };
 
         var currentTab = 'quran';
         var currentPage = 1;
@@ -654,94 +701,54 @@
         }
 
         // ================================================================
-        // 📚 হাদিস সংগ্রহ লোড (GitHub থেকে সরাসরি)
+        // 📚 হাদিস সংগ্রহ লোড (স্থানীয় ডেটা)
         // ================================================================
         function loadHadithCollection(collection) {
-            var fileName = HADITH_EDITIONS[collection];
-            if (!fileName) {
-                showNoResult('এই সংগ্রহটি এখনও যোগ করা হয়নি।');
+            var hadiths = HADITH_DATA[collection];
+            if (!hadiths || hadiths.length === 0) {
+                showNoResult('এই সংগ্রহে কোনো হাদিস পাওয়া যায়নি।');
                 return;
             }
 
-            showLoading();
-            var url = HADITH_API_BASE + '/' + fileName;
+            var results = hadiths.map(function(item, index) {
+                item._id = index + 1;
+                return item;
+            });
 
-            fetch(url)
-                .then(function(res) {
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    return res.json();
-                })
-                .then(function(data) {
-                    hideLoading();
-                    var hadiths = [];
-                    for (var key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            var item = data[key];
-                            item._id = key;
-                            hadiths.push(item);
-                        }
-                    }
-                    hadiths.sort(function(a, b) {
-                        return parseInt(a._id) - parseInt(b._id);
-                    });
-                    currentResults = hadiths;
-                    renderHadithResults(hadiths);
-                })
-                .catch(function(err) {
-                    hideLoading();
-                    console.error('হাদিস লোড এরর:', err);
-                    showNoResult('হাদিস লোড করা সম্ভব হয়নি। ইন্টারনেট সংযোগ চেক করুন।');
-                });
+            currentResults = results;
+            renderHadithResults(results);
         }
 
         // ================================================================
-        // 🔍 হাদিস সার্চ
+        // 🔍 হাদিস সার্চ (স্থানীয় ডেটায়)
         // ================================================================
         function searchHadith(query, collection) {
-            var fileName = HADITH_EDITIONS[collection];
-            if (!fileName) {
-                showNoResult('এই সংগ্রহটি এখনও যোগ করা হয়নি।');
+            var hadiths = HADITH_DATA[collection];
+            if (!hadiths || hadiths.length === 0) {
+                showNoResult('এই সংগ্রহে কোনো হাদিস পাওয়া যায়নি।');
                 return;
             }
 
-            showLoading();
-            var url = HADITH_API_BASE + '/' + fileName;
+            var lowerQuery = query.toLowerCase();
+            var results = [];
 
-            fetch(url)
-                .then(function(res) {
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    return res.json();
-                })
-                .then(function(data) {
-                    hideLoading();
-                    var results = [];
-                    var lowerQuery = query.toLowerCase();
+            for (var i = 0; i < hadiths.length; i++) {
+                var item = hadiths[i];
+                var text = (item.text || '').toLowerCase();
+                var narrator = (item.narrator || '').toLowerCase();
+                if (text.includes(lowerQuery) || narrator.includes(lowerQuery)) {
+                    item._id = i + 1;
+                    results.push(item);
+                }
+            }
 
-                    for (var key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            var item = data[key];
-                            var text = (item.text || '').toLowerCase();
-                            var title = (item.title || '').toLowerCase();
-                            if (text.includes(lowerQuery) || title.includes(lowerQuery)) {
-                                item._id = key;
-                                results.push(item);
-                            }
-                        }
-                    }
+            if (results.length === 0) {
+                showNoResult('"' + query + '" সম্পর্কে কোনো হাদিস পাওয়া যায়নি।');
+                return;
+            }
 
-                    if (results.length === 0) {
-                        showNoResult('"' + query + '" সম্পর্কে কোনো হাদিস পাওয়া যায়নি।');
-                        return;
-                    }
-
-                    currentResults = results;
-                    renderHadithResults(results);
-                })
-                .catch(function(err) {
-                    hideLoading();
-                    showNoResult('সার্চ করা সম্ভব হয়নি। আবার চেষ্টা করুন।');
-                    console.error(err);
-                });
+            currentResults = results;
+            renderHadithResults(results);
         }
 
         // ================================================================
@@ -758,21 +765,13 @@
             var html = '';
             for (var i = 0; i < pageItems.length; i++) {
                 var item = pageItems[i];
-                var hadithText = item.text || '';
-                var hadithTitle = item.title || '';
-                var arabic = item.arabic || '';
-                var ref = item.refno || '';
-
                 html += '<div class="hadith-card">';
-                if (hadithTitle) {
-                    html += '<div class="h-narrator">📜 ' + hadithTitle + '</div>';
+                if (item.narrator) {
+                    html += '<div class="h-narrator">📜 বর্ণনাকারী: ' + item.narrator + ' <span class="ra">(রাদিয়াল্লাহু তা‘আলা আনহু)</span></div>';
                 }
-                if (arabic) {
-                    html += '<div class="h-arabic">' + arabic + '</div>';
-                }
-                html += '<div class="h-text">' + hadithText + '</div>';
-                if (ref) {
-                    html += '<div class="h-ref">📌 ' + ref + '</div>';
+                html += '<div class="h-text">' + item.text + '</div>';
+                if (item.ref) {
+                    html += '<div class="h-ref">📌 ' + item.ref + '</div>';
                 }
                 html += '</div>';
             }
@@ -871,7 +870,7 @@
             showSurahGrid();
         };
 
-        // ================================================================
+        //================================================================
         // ডেভেলপার
         // ================================================================
         var DEV_INFO = {
@@ -907,7 +906,8 @@
         });
 
         console.log('📖 ইসলামিক কন্টেন্ট প্ল্যাটফর্ম লোড হয়েছে!');
-        console.log('📌 হাদিস লোড করতে কিছু সময় লাগতে পারে।');
+        console.log('📌 হাদিস দেখতে ট্যাব পরিবর্তন করুন।');
+        console.log('📌 বর্ণনাকারীর নাম দিয়েও সার্চ করতে পারেন।');
     </script>
 
 </body>
