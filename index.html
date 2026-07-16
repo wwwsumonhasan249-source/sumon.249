@@ -17,10 +17,7 @@
             min-height: 100vh;
             padding: 20px;
         }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1000px; margin: 0 auto; }
 
         .header {
             text-align: center;
@@ -37,13 +34,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .header p {
-            color: #888;
-            font-size: 14px;
-            margin-top: 4px;
-        }
+        .header p { color: #888; font-size: 14px; margin-top: 4px; }
 
-        /* ===== ট্যাব ===== */
         .tab-bar {
             display: flex;
             gap: 10px;
@@ -62,17 +54,9 @@
             font-weight: 600;
             transition: 0.3s;
         }
-        .tab-btn:hover {
-            background: rgba(46,204,113,0.1);
-            color: #2ecc71;
-        }
-        .tab-btn.active {
-            background: #2ecc71;
-            color: #000;
-            border-color: #2ecc71;
-        }
+        .tab-btn:hover { background: rgba(46,204,113,0.1); color: #2ecc71; }
+        .tab-btn.active { background: #2ecc71; color: #000; border-color: #2ecc71; }
 
-        /* ===== সূরা বাটন গ্রিড ===== */
         .surah-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -109,7 +93,6 @@
             margin-top: 2px;
         }
 
-        /* ===== সার্চ ===== */
         .search-box {
             background: rgba(255,255,255,0.04);
             backdrop-filter: blur(12px);
@@ -134,12 +117,8 @@
             outline: none;
             min-width: 150px;
         }
-        .search-box .input-group input:focus {
-            border-color: #2ecc71;
-        }
-        .search-box .input-group input::placeholder {
-            color: #555;
-        }
+        .search-box .input-group input:focus { border-color: #2ecc71; }
+        .search-box .input-group input::placeholder { color: #555; }
         .search-box .input-group button {
             background: #2ecc71;
             color: #000;
@@ -151,12 +130,8 @@
             cursor: pointer;
             transition: 0.3s;
         }
-        .search-box .input-group button:hover {
-            transform: scale(1.03);
-            background: #27ae60;
-        }
+        .search-box .input-group button:hover { transform: scale(1.03); background: #27ae60; }
 
-        /* ===== কন্টেন্ট ===== */
         .content-area {
             background: rgba(255,255,255,0.04);
             backdrop-filter: blur(12px);
@@ -165,39 +140,19 @@
             border: 1px solid rgba(255,255,255,0.06);
             min-height: 200px;
         }
-        .loading {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-            display: none;
-        }
-        .loading.show {
-            display: block;
-        }
-        .no-result {
-            text-align: center;
-            padding: 30px;
-            color: #555;
-            display: none;
-        }
-        .no-result.show {
-            display: block;
-        }
-        .no-result .icon {
-            font-size: 40px;
-            margin-bottom: 8px;
-        }
+        .loading { text-align: center; padding: 30px; color: #666; display: none; }
+        .loading.show { display: block; }
+        .no-result { text-align: center; padding: 30px; color: #555; display: none; }
+        .no-result.show { display: block; }
+        .no-result .icon { font-size: 40px; margin-bottom: 8px; }
 
-        /* ===== সূরা ভিউ ===== */
         .surah-view .surah-name {
             font-size: 24px;
             font-weight: 700;
             color: #2ecc71;
             margin-bottom: 4px;
         }
-        .surah-view .surah-name .bn {
-            color: #fff;
-        }
+        .surah-view .surah-name .bn { color: #fff; }
         .surah-view .surah-info {
             font-size: 13px;
             color: #888;
@@ -244,12 +199,8 @@
             margin-bottom: 14px;
             transition: 0.3s;
         }
-        .back-btn:hover {
-            background: rgba(46,204,113,0.15);
-            color: #2ecc71;
-        }
+        .back-btn:hover { background: rgba(46,204,113,0.15); color: #2ecc71; }
 
-        /* ===== হাদিস ===== */
         .hadith-card {
             padding: 12px 16px;
             background: rgba(255,255,255,0.03);
@@ -257,21 +208,9 @@
             margin-bottom: 8px;
             border-left: 3px solid #2ecc71;
         }
-        .hadith-card .h-narrator {
-            font-size: 12px;
-            color: #2ecc71;
-            font-weight: 600;
-        }
-        .hadith-card .h-text {
-            font-size: 14px;
-            color: #ddd;
-            margin: 4px 0;
-            line-height: 1.6;
-        }
-        .hadith-card .h-ref {
-            font-size: 11px;
-            color: #666;
-        }
+        .hadith-card .h-narrator { font-size: 12px; color: #2ecc71; font-weight: 600; }
+        .hadith-card .h-text { font-size: 14px; color: #ddd; margin: 4px 0; line-height: 1.6; }
+        .hadith-card .h-ref { font-size: 11px; color: #666; }
         .hadith-card .h-arabic {
             font-size: 16px;
             font-family: 'Amiri', 'Traditional Arabic', serif;
@@ -299,15 +238,8 @@
             font-size: 12px;
             transition: 0.3s;
         }
-        .pagination button:hover {
-            background: rgba(46,204,113,0.15);
-            color: #2ecc71;
-        }
-        .pagination button.active {
-            background: #2ecc71;
-            color: #000;
-            border-color: #2ecc71;
-        }
+        .pagination button:hover { background: rgba(46,204,113,0.15); color: #2ecc71; }
+        .pagination button.active { background: #2ecc71; color: #000; border-color: #2ecc71; }
 
         /* ===== ডেভেলপার ===== */
         .dev-btn {
@@ -328,9 +260,7 @@
             justify-content: center;
             transition: 0.3s;
         }
-        .dev-btn:hover {
-            background: rgba(46,204,113,0.25);
-        }
+        .dev-btn:hover { background: rgba(46,204,113,0.25); }
 
         .modal-overlay {
             display: none;
@@ -345,9 +275,7 @@
             align-items: center;
             z-index: 9999;
         }
-        .modal-overlay.show {
-            display: flex;
-        }
+        .modal-overlay.show { display: flex; }
         .modal-box {
             background: #1a2a3a;
             border-radius: 24px;
@@ -376,15 +304,8 @@
             height: 100%;
             object-fit: cover;
         }
-        .modal-box h2 {
-            font-size: 20px;
-            margin-bottom: 2px;
-        }
-        .modal-box .role {
-            color: #aaa;
-            font-size: 13px;
-            margin-bottom: 14px;
-        }
+        .modal-box h2 { font-size: 20px; margin-bottom: 2px; }
+        .modal-box .role { color: #aaa; font-size: 13px; margin-bottom: 14px; }
         .modal-box .contact-item {
             display: flex;
             align-items: center;
@@ -399,10 +320,7 @@
             color: white;
             transition: 0.2s;
         }
-        .modal-box .contact-item:hover {
-            background: #2ecc71;
-            color: #000;
-        }
+        .modal-box .contact-item:hover { background: #2ecc71; color: #000; }
         .modal-close {
             background: #ff4444;
             border: none;
@@ -413,9 +331,7 @@
             cursor: pointer;
             font-size: 14px;
         }
-        .modal-close:hover {
-            background: #cc0000;
-        }
+        .modal-close:hover { background: #cc0000; }
 
         @media (max-width:600px) {
             .header h1 { font-size: 22px; }
@@ -436,7 +352,6 @@
             <p>কুরআন ও হাদিস — আরবি ও বাংলা অনুবাদ সহ</p>
         </div>
 
-        <!-- ===== ট্যাব ===== -->
         <div class="tab-bar">
             <button class="tab-btn active" data-tab="quran">📖 কুরআন</button>
             <button class="tab-btn" data-tab="bukhari">📚 বুখারী</button>
@@ -445,7 +360,6 @@
             <button class="tab-btn" data-tab="abudawud">📚 আবু দাউদ</button>
         </div>
 
-        <!-- ===== সার্চ ===== -->
         <div class="search-box">
             <div class="input-group">
                 <input type="text" id="searchInput" placeholder="সূরা নাম বা হাদিসের কীওয়ার্ড..." />
@@ -453,7 +367,6 @@
             </div>
         </div>
 
-        <!-- ===== কন্টেন্ট ===== -->
         <div class="content-area" id="contentArea">
             <div class="loading" id="loading">⏳ লোড হচ্ছে...</div>
             <div id="resultContainer"></div>
@@ -466,7 +379,6 @@
 
     </div>
 
-    <!-- ===== ডেভেলপার ===== -->
     <button class="dev-btn" id="devBtn">👤</button>
     <div class="modal-overlay" id="devModal">
         <div class="modal-box">
@@ -579,8 +491,7 @@
             { num: 89, ar: 'الْفَجْر', bn: 'ফজর' },
             { num: 90, ar: 'الْبَلَد', bn: 'বালাদ' },
             { num: 91, ar: 'الشَّمْس', bn: 'শামস' },
-            { num: 92, ar: 'اللَّيْل', bn: 
-'লাইল' },
+            { num: 92, ar: 'اللَّيْل', bn: 'লাইল' },
             { num: 93, ar: 'الضُّحَى', bn: 'দুহা' },
             { num: 94, ar: 'الشَّرْح', bn: 'শারহ' },
             { num: 95, ar: 'التِّين', bn: 'তিন' },
@@ -602,27 +513,29 @@
             { num: 111, ar: 'الْمَسَد', bn: 'মাসাদ' },
             { num: 112, ar: 'الْإِخْلَاص', bn: 'ইখলাস' },
             { num: 113, ar: 'الْفَلَق', bn: 'ফালাক' },
-            { num: 114, ar: 'النَّاس', bn: 'নাস' }
+            { num: 114, ar: 'النَّاس', bn:'নাস' }
         ];
 
         // ================================================================
         // API কনফিগারেশন
         // ================================================================
         var QURAN_API = 'https://api.alquran.cloud/v1';
-        var HADITH_CDN = 'https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions';
+
+        // হাদিসের জন্য বিকল্প API (সরাসরি JSON)
+        var HADITH_API_BASE = 'https://raw.githubusercontent.com/fawazahmed0/hadith-api/1/editions';
 
         var HADITH_EDITIONS = {
-            bukhari: 'eng-bukhari',
-            muslim: 'eng-muslim',
-            tirmidhi: 'eng-tirmidhi',
-            abudawud: 'eng-abudawud'
+            bukhari: 'eng-bukhari.json',
+            muslim: 'eng-muslim.json',
+            tirmidhi: 'eng-tirmidhi.json',
+            abudawud: 'eng-abudawud.json'
         };
 
         var currentTab = 'quran';
         var currentPage = 1;
         var itemsPerPage = 10;
         var currentResults = [];
-        var viewMode = 'grid'; // 'grid' or 'surah'
+        var viewMode = 'grid';
 
         // ================================================================
         // ডম এলিমেন্ট
@@ -659,7 +572,7 @@
         });
 
         // ================================================================
-        // 🏠 সূরা গ্রিড দেখানো
+        // 🏠 সূরা গ্রিড
         // ================================================================
         function showSurahGrid() {
             var html = '<div class="surah-grid">';
@@ -675,7 +588,6 @@
             noResult.classList.remove('show');
             pagination.innerHTML = '';
 
-            // বাটনে ক্লিক
             document.querySelectorAll('.surah-btn').forEach(function(btn) {
                 btn.addEventListener('click', function() {
                     var surahNum = parseInt(this.getAttribute('data-surah'));
@@ -742,17 +654,17 @@
         }
 
         // ================================================================
-        // 📚 হাদিস সংগ্রহ লোড
+        // 📚 হাদিস সংগ্রহ লোড (GitHub থেকে সরাসরি)
         // ================================================================
         function loadHadithCollection(collection) {
-            var edition = HADITH_EDITIONS[collection];
-            if (!edition) {
+            var fileName = HADITH_EDITIONS[collection];
+            if (!fileName) {
                 showNoResult('এই সংগ্রহটি এখনও যোগ করা হয়নি।');
                 return;
             }
 
             showLoading();
-            var url = HADITH_CDN + '/' + edition + '.json';
+            var url = HADITH_API_BASE + '/' + fileName;
 
             fetch(url)
                 .then(function(res) {
@@ -777,8 +689,8 @@
                 })
                 .catch(function(err) {
                     hideLoading();
-                    showNoResult('হাদিস লোড করা সম্ভব হয়নি। আবার চেষ্টা করুন।');
-                    console.error(err);
+                    console.error('হাদিস লোড এরর:', err);
+                    showNoResult('হাদিস লোড করা সম্ভব হয়নি। ইন্টারনেট সংযোগ চেক করুন।');
                 });
         }
 
@@ -786,14 +698,14 @@
         // 🔍 হাদিস সার্চ
         // ================================================================
         function searchHadith(query, collection) {
-            var edition = HADITH_EDITIONS[collection];
-            if (!edition) {
+            var fileName = HADITH_EDITIONS[collection];
+            if (!fileName) {
                 showNoResult('এই সংগ্রহটি এখনও যোগ করা হয়নি।');
                 return;
             }
 
             showLoading();
-            var url = HADITH_CDN + '/' + edition + '.json';
+            var url = HADITH_API_BASE + '/' + fileName;
 
             fetch(url)
                 .then(function(res) {
@@ -926,7 +838,6 @@
             }
 
             if (currentTab === 'quran') {
-                // সূরা নাম দিয়ে খোঁজ
                 var found = null;
                 for (var i = 0; i < SURAH_NAMES.length; i++) {
                     var s = SURAH_NAMES[i];
@@ -994,6 +905,9 @@
                 devModal.classList.remove('show');
             }
         });
+
+        console.log('📖 ইসলামিক কন্টেন্ট প্ল্যাটফর্ম লোড হয়েছে!');
+        console.log('📌 হাদিস লোড করতে কিছু সময় লাগতে পারে।');
     </script>
 
 </body>
